@@ -38,6 +38,7 @@ public class BurgerDao {
             }
         }
         throw new SQLException("ID non généré");
+        
     } catch (SQLException e) {
         throw new RuntimeException("Erreur lors de l'ajout du burger", e);
     }

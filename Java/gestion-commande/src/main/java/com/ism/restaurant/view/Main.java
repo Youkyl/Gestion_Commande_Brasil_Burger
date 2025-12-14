@@ -5,7 +5,7 @@ import com.ism.restaurant.config.DBConnection;
 
 public class Main {
     public static void main(String[] args) {
-        BurgerView view = new BurgerView();
-        view.archiverBurger();
+        MenuView view = new MenuView();
+        view.ajouterMenu();
     }
 }
