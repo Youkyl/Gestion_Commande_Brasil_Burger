@@ -21,7 +21,7 @@ public class MenuService {
     }
 
 
-    public void ajouterMenu(String nom, String imageUrl, int burgerId) {
+    public long ajouterMenu(String nom, String imageUrl, int burgerId) {
 
         if (nom == null || nom.isBlank()) {
             throw new IllegalArgumentException("Nom du menu obligatoire");
@@ -41,7 +41,7 @@ public class MenuService {
         menu.setBurger(burger);
         menu.setPrix(prixMenu);
 
-        menuDao.insertMenu(menu);
+        return menuDao.insertMenu(menu);
 }
 
     public List<Menu> searchMenuByName(String nom) {

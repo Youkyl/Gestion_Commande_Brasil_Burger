@@ -40,10 +40,17 @@ public class MenuView {
         System.out.print("ID du burger : ");
         int burgerId = scanner.nextInt();
         scanner.nextLine();
+        
 
-        menuService.ajouterMenu(nom, imageUrl, burgerId);
+         try {
+            long id =  menuService.ajouterMenu(nom, imageUrl, burgerId);
 
-        System.out.println("Menu ajouté avec succès (prix calculé automatiquement).");
+            System.out.println("Menu ajouté avec succès (ID = " + id + " prix calculé automatiquement");
+        } catch (Exception e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+
+
 }
 
     public void modifierMenu() {
