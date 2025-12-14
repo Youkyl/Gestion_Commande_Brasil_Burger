@@ -32,6 +32,38 @@ public class BurgerService {
     }
 
 
+    public List<Burger> searchBurgerByNaom(String nom) {
 
+        if (nom == null || nom.isBlank()) {
+            throw new IllegalArgumentException("Le nom du burger est obligatoire");
+        }
+
+        return burgerDao.findByNom(nom);
+}
+
+
+    public void modifierBurgerPartiel(int id, String nom, String ingredient, Double prix, String imageUrl) {
+
+    Burger burger = burgerDao.findById(id);
+
+    if (burger == null) {
+        throw new RuntimeException("Burger introuvable");
+    }
+
+    if (nom != null && !nom.isBlank()) {
+        burger.setNom(nom);
+    }
+    if (ingredient != null && !ingredient.isBlank()) {
+        burger.setingredient(ingredient);
+    }
+    if (prix != null && prix > 0) {
+        burger.setPrix(prix);
+    }
+    if (imageUrl != null && !imageUrl.isBlank()) {
+        burger.setImageUrl(imageUrl);
+    }
+
+    burgerDao.updateBurger(burger);
+}
     
 }

@@ -43,7 +43,94 @@ public class BurgerDao {
     }
 }
 
-    
+    public void updateBurger(Burger burger) {
+        String sql = """
+            UPDATE burger
+            SET nom = ?, ingredient = ?, prix = ?, image_url = ?
+            WHERE id = ? AND is_archive = false
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, burger.getNom());
+            ps.setString(2, burger.getingredient());
+            ps.setDouble(3, burger.getPrix());
+            ps.setString(4, burger.getImageUrl());
+            ps.setInt(5, burger.getId());
+
+            int rows = ps.executeUpdate();
+
+            if (rows == 0) {
+                throw new RuntimeException("Burger introuvable ou archivé");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la modification du burger", e);
+        }
+}
+
+public List<Burger> findByNom(String nom) {
+
+    String sql = """
+        SELECT id, nom, ingredient, prix, image_url, is_archive
+        FROM burger
+        WHERE nom ILIKE ? AND is_archive = false
+    """;
+
+    List<Burger> burgers = new ArrayList<>();
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+        ps.setString(1, "%" + nom + "%");
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Burger burger = new Burger();
+            burger.setId(rs.getInt("id"));
+            burger.setNom(rs.getString("nom"));
+            burger.setingredient(rs.getString("ingredient"));
+            burger.setPrix(rs.getDouble("prix"));
+            burger.setImageUrl(rs.getString("image_url"));
+            burger.setArchive(rs.getBoolean("is_archive"));
+
+            burgers.add(burger);
+        }
+
+    } catch (SQLException e) {
+        throw new RuntimeException("Erreur recherche burger par nom", e);
+    }
+
+    return burgers;
+}
+
+public Burger findById(int id) {
+
+    String sql = """
+        SELECT id, nom, ingredient, prix, image_url, is_archive
+        FROM burger
+        WHERE id = ? AND is_archive = false
+    """;
+
+    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Burger burger = new Burger();
+            burger.setId(rs.getInt("id"));
+            burger.setNom(rs.getString("nom"));
+            burger.setingredient(rs.getString("ingredient"));
+            burger.setPrix(rs.getDouble("prix"));
+            burger.setImageUrl(rs.getString("image_url"));
+            return burger;
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException("Burger introuvable", e);
+    }
+
+    return null;
+}
 
 
 }

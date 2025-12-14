@@ -35,6 +35,45 @@ public class BurgerView {
     }
 
 
-   
+    public void modifierBurger() {
+
+        System.out.print("Nom du burger à rechercher : ");
+        String nom = scanner.nextLine();
+
+        List<Burger> burgers = service.searchBurgerByNaom(nom);
+
+        if (burgers.isEmpty()) {
+            System.out.println("Aucun burger trouvé.");
+            return;
+        }
+
+        burgers.forEach(b ->
+            System.out.println("ID: " + b.getId() + " | " + b.getNom())
+        );
+
+        System.out.print("ID du burger à modifier : ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Nouveau nom (laisser vide pour ne pas changer) : ");
+        String newNom = scanner.nextLine();
+
+        System.out.print("Nouvelle description (laisser vide) : ");
+        String description = scanner.nextLine();
+
+        System.out.print("Nouveau prix (0 pour ne pas changer) : ");
+        double prixInput = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.print("Nouvelle image URL (laisser vide) : ");
+        String imageUrl = scanner.nextLine();
+
+        Double prix = prixInput > 0 ? prixInput : null;
+
+        service.modifierBurgerPartiel(id, newNom, description, prix, imageUrl);
+
+        System.out.println("Burger modifié avec succès.");
+}
+
 
 }
