@@ -105,4 +105,31 @@ public class MenuView {
         System.out.println("Menu modifié avec succès.");
 }
 
+
+public void archiverMenu() {
+
+        System.out.print("Nom du Menu à rechercher : ");
+        String nom = scanner.nextLine();
+
+        List<Menu> menus = menuService.searchMenuByName(nom);
+
+        if (menus.isEmpty()) {
+            System.out.println("Aucun menu trouvé.");
+            return;
+        }
+
+        menus.forEach(m ->
+            System.out.println("ID: " + m.getId() + " | " + m.getNom())
+        );
+
+    System.out.print("ID du menu à archiver : ");
+    int id = scanner.nextInt();
+    scanner.nextLine();
+
+    menuService.archiverMenu(id);
+
+    System.out.println("Burger archivé avec succès.");
+}
+
+
 }

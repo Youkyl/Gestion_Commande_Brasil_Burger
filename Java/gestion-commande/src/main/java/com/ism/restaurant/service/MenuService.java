@@ -99,6 +99,13 @@ public class MenuService {
     menuDao.updateMenu(menu);
 }
 
+    public void archiverMenu(int id) {
 
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID du menu invalide");
+        }
+
+        menuDao.archiverMenu(id);
+}
 
 }
