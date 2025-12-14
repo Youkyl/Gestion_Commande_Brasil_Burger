@@ -86,5 +86,29 @@ public class ComplementView {
 
         System.out.println("Complément modifié avec succès.");
 }
+
+    public void archiverComplement() {
+
+        System.out.print("type du complément à rechercher : ");
+        TypeComplement typeInput = TypeComplement.valueOf(scanner.nextLine().toUpperCase());
+
+        List<Complement> complements = complementService.searchComplementByType(typeInput);
+
+        if (complements.isEmpty()) {
+            System.out.println("Aucun complément trouvé.");
+            return;
+        }
+
+        complements.forEach(c ->
+            System.out.println("ID: " + c.getId() + " | " + c.getNom())
+        );
+
+        System.out.print("ID du complément à archiver : ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        complementService.archiverComplement(id);
+        System.out.println("Complément archivé avec succès.");
+    }
     
 }

@@ -193,4 +193,27 @@ public class ComplementDao {
     }
 
 
+
+    public void archiverComplement(int id) {
+
+        String sql = """
+            UPDATE complement
+            SET is_archive = true
+            WHERE id = ? AND is_archive = false
+        """;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            int rows = ps.executeUpdate();
+
+            if (rows == 0) {
+                throw new RuntimeException("Complement introuvable ou déjà archivé");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l’archivage du complement", e);
+        }
+    }
+        
 }

@@ -108,5 +108,13 @@ public List<Complement> searchComplementByType(TypeComplement type) {
 }
     
 
+    public void archiverComplement(int id) {
+
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID du complément invalide");
+        }
+
+        complementDao.archiverComplement(id);
+    }
 
     }

@@ -67,14 +67,14 @@ public class BurgerService {
 }
     
 
-public void archiverBurger(int id) {
+    public void archiverBurger(int id) {
 
-    if (id <= 0) {
-        throw new IllegalArgumentException("ID du burger invalide");
+        if (id <= 0) {
+            throw new IllegalArgumentException("ID du burger invalide");
+        }
+
+        burgerDao.archiverBurger(id);
     }
-
-    burgerDao.archiverBurger(id);
-}
 
 
 
