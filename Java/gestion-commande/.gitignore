@@ -1,0 +1,9 @@
+# === Secrets ===
+application.properties
+
+# === Maven ===
+target/
+
+# === IDE ===
+.vscode/
+.idea/
