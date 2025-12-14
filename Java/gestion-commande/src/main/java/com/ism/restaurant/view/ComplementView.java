@@ -111,4 +111,32 @@ public class ComplementView {
         System.out.println("Complément archivé avec succès.");
     }
     
+
+
+
+    public void menuComplement() {
+
+        while (true) {
+            System.out.println("\n=== GESTION DES COMPLEMENTS ===");
+            System.out.println("1. Ajouter un complément");
+            System.out.println("2. Modifier un complément");
+            System.out.println("3. Archiver un complément");
+            System.out.println("0. Retour au menu principal");
+            System.out.print("Choix : ");
+
+            String choix = scanner.nextLine();
+
+            switch (choix) {
+                case "1" -> ajouterComplement();
+                case "2" -> modifierComplement();
+                case "3" -> archiverComplement();
+                case "0" -> {
+                    return;
+                }
+                default -> System.out.println("Choix invalide.");
+            }
+        }
+    }
+
+
 }

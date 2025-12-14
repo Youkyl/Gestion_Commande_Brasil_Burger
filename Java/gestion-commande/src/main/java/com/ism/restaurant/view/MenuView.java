@@ -139,4 +139,31 @@ public void archiverMenu() {
 }
 
 
+    public void menuMenu() {
+        int choice = -1;
+
+        while (choice != 4) {
+            System.out.println("\n--- Menu Gestion des Menus ---");
+            System.out.println("1. Ajouter un menu");
+            System.out.println("2. Modifier un menu");
+            System.out.println("3. Archiver un menu");
+            System.out.println("0. Retour au menu principal");
+            System.out.print("Choix : ");
+
+            choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> ajouterMenu();
+                case 2 -> modifierMenu();
+                case 3 -> archiverMenu();
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("Choix invalide. Veuillez réessayer.");
+            }
+        }
+    }
+
+
 }

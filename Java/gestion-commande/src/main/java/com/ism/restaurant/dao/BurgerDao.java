@@ -66,8 +66,10 @@ public class BurgerDao {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la modification du burger", e);
-        }
+    e.printStackTrace(); // IMPORTANT
+    throw new RuntimeException("Erreur lors de l'ajout du burger : " + e.getMessage());
+}
+
 }
 
     public List<Burger> findByNom(String nom) {

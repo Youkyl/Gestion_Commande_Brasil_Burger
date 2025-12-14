@@ -101,4 +101,31 @@ public class BurgerView {
     }
 
 
+
+    public void menuBurger() {
+
+        while (true) {
+            System.out.println("\n=== GESTION DES BURGERS ===");
+            System.out.println("1. Ajouter un burger");
+            System.out.println("2. Modifier un burger");
+            System.out.println("3. Archiver un burger");
+            System.out.println("0. Retour");
+            System.out.print("Choix : ");
+
+            String choix = scanner.nextLine();
+
+            switch (choix) {
+                case "1" -> ajouterBurger();
+                case "2" -> modifierBurger();
+                case "3" -> archiverBurger();
+                case "0" -> {
+                    return;
+                }
+                default -> System.out.println("Choix invalide.");
+            }
+        }
+    }
+
+
+
 }
