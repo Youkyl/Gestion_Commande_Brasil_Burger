@@ -38,7 +38,7 @@ public class BurgerDao {
             }
         }
         throw new SQLException("ID non généré");
-        
+
     } catch (SQLException e) {
         throw new RuntimeException("Erreur lors de l'ajout du burger", e);
     }
@@ -70,70 +70,70 @@ public class BurgerDao {
         }
 }
 
-public List<Burger> findByNom(String nom) {
+    public List<Burger> findByNom(String nom) {
 
-    String sql = """
-        SELECT id, nom, ingredient, prix, image_url, is_archive
-        FROM burger
-        WHERE nom ILIKE ? AND is_archive = false
-    """;
+        String sql = """
+            SELECT id, nom, ingredient, prix, image_url, is_archive
+            FROM burger
+            WHERE nom ILIKE ? AND is_archive = false
+        """;
 
-    List<Burger> burgers = new ArrayList<>();
+        List<Burger> burgers = new ArrayList<>();
 
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-        ps.setString(1, "%" + nom + "%");
+            ps.setString(1, "%" + nom + "%");
 
-        ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-        while (rs.next()) {
-            Burger burger = new Burger();
-            burger.setId(rs.getInt("id"));
-            burger.setNom(rs.getString("nom"));
-            burger.setingredient(rs.getString("ingredient"));
-            burger.setPrix(rs.getDouble("prix"));
-            burger.setImageUrl(rs.getString("image_url"));
-            burger.setArchive(rs.getBoolean("is_archive"));
+            while (rs.next()) {
+                Burger burger = new Burger();
+                burger.setId(rs.getInt("id"));
+                burger.setNom(rs.getString("nom"));
+                burger.setingredient(rs.getString("ingredient"));
+                burger.setPrix(rs.getDouble("prix"));
+                burger.setImageUrl(rs.getString("image_url"));
+                burger.setArchive(rs.getBoolean("is_archive"));
 
-            burgers.add(burger);
+                burgers.add(burger);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur recherche burger par nom", e);
         }
 
-    } catch (SQLException e) {
-        throw new RuntimeException("Erreur recherche burger par nom", e);
+        return burgers;
     }
 
-    return burgers;
-}
+    public Burger findById(int id) {
 
-public Burger findById(int id) {
+        String sql = """
+            SELECT id, nom, ingredient, prix, image_url, is_archive
+            FROM burger
+            WHERE id = ? AND is_archive = false
+        """;
 
-    String sql = """
-        SELECT id, nom, ingredient, prix, image_url, is_archive
-        FROM burger
-        WHERE id = ? AND is_archive = false
-    """;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
 
-    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            Burger burger = new Burger();
-            burger.setId(rs.getInt("id"));
-            burger.setNom(rs.getString("nom"));
-            burger.setingredient(rs.getString("ingredient"));
-            burger.setPrix(rs.getDouble("prix"));
-            burger.setImageUrl(rs.getString("image_url"));
-            return burger;
+            if (rs.next()) {
+                Burger burger = new Burger();
+                burger.setId(rs.getInt("id"));
+                burger.setNom(rs.getString("nom"));
+                burger.setingredient(rs.getString("ingredient"));
+                burger.setPrix(rs.getDouble("prix"));
+                burger.setImageUrl(rs.getString("image_url"));
+                return burger;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Burger introuvable", e);
         }
-    } catch (SQLException e) {
-        throw new RuntimeException("Burger introuvable", e);
+
+        return null;
     }
 
-    return null;
-}
-
-public void archiverBurger(int id) {
+    public void archiverBurger(int id) {
 
     String sql = """
         UPDATE burger
