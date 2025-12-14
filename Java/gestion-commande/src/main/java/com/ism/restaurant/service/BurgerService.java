@@ -32,7 +32,7 @@ public class BurgerService {
     }
 
 
-    public List<Burger> searchBurgerByNaom(String nom) {
+    public List<Burger> searchBurgerByName(String nom) {
 
         if (nom == null || nom.isBlank()) {
             throw new IllegalArgumentException("Le nom du burger est obligatoire");
@@ -66,4 +66,16 @@ public class BurgerService {
     burgerDao.updateBurger(burger);
 }
     
+
+public void archiverBurger(int id) {
+
+    if (id <= 0) {
+        throw new IllegalArgumentException("ID du burger invalide");
+    }
+
+    burgerDao.archiverBurger(id);
+}
+
+
+
 }

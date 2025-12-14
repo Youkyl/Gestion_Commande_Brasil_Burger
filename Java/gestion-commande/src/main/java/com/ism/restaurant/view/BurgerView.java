@@ -40,7 +40,7 @@ public class BurgerView {
         System.out.print("Nom du burger à rechercher : ");
         String nom = scanner.nextLine();
 
-        List<Burger> burgers = service.searchBurgerByNaom(nom);
+        List<Burger> burgers = service.searchBurgerByName(nom);
 
         if (burgers.isEmpty()) {
             System.out.println("Aucun burger trouvé.");
@@ -73,6 +73,31 @@ public class BurgerView {
         service.modifierBurgerPartiel(id, newNom, description, prix, imageUrl);
 
         System.out.println("Burger modifié avec succès.");
+}
+
+public void archiverBurger() {
+
+    System.out.print("Nom du burger à rechercher : ");
+    String nom = scanner.nextLine();
+
+    List<Burger> burgers = service.searchBurgerByName(nom);
+
+    if (burgers.isEmpty()) {
+        System.out.println("Aucun burger trouvé.");
+        return;
+    }
+
+    burgers.forEach(b ->
+        System.out.println("ID: " + b.getId() + " | " + b.getNom())
+    );
+
+    System.out.print("ID du burger à archiver : ");
+    int id = scanner.nextInt();
+    scanner.nextLine();
+
+    service.archiverBurger(id);
+
+    System.out.println("Burger archivé avec succès.");
 }
 
 
