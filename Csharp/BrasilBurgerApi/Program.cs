@@ -11,6 +11,19 @@ builder.Services.AddScoped<IClientRepository>(sp =>
     new ClientRepository(builder.Configuration.GetConnectionString("NeonDB")!)
 );
 
+// Repositories
+builder.Services.AddScoped<IBurgerRepository>(sp =>
+    new BurgerRepository(builder.Configuration.GetConnectionString("NeonDB")!));
+
+builder.Services.AddScoped<IMenuRepository>(sp =>
+    new MenuRepository(builder.Configuration.GetConnectionString("NeonDB")!));
+
+builder.Services.AddScoped<IComplementRepository>(sp =>
+    new ComplementRepository(builder.Configuration.GetConnectionString("NeonDB")!));
+
+// Service
+builder.Services.AddScoped<CatalogueService>();
+
 // Services
 builder.Services.AddScoped<ClientService>();
 
