@@ -27,4 +27,15 @@ public class ClientController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        var result = await _service.LoginAsync(request);
+
+        if (result == null)
+            return Unauthorized(new { message = "Email ou mot de passe incorrect" });
+
+        return Ok(result);
+    }
 }

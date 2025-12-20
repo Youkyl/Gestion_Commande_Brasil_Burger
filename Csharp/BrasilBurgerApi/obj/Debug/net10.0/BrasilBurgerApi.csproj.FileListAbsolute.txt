@@ -41,3 +41,11 @@ C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\obj\Debu
 C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\obj\Debug\net10.0\BrasilBurgerApi.pdb
 C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\obj\Debug\net10.0\BrasilBurgerApi.genruntimeconfig.cache
 C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\obj\Debug\net10.0\ref\BrasilBurgerApi.dll
+C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+C:\Projets\School\Gestion_Commande_Brasil_Burger\Csharp\BrasilBurgerApi\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll

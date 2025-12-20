@@ -1,26 +1,17 @@
 using BrasilBurgerApi.Repository;
-using BrasilBurgerApi.Config;
 using BrasilBurgerApi.Service;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Controllers
 builder.Services.AddControllers();
 
-// Bind DatabaseSettings
-builder.Services.Configure<DatabaseSettings>(
-    builder.Configuration.GetSection("ConnectionStrings")
+// Repository
+builder.Services.AddScoped<IClientRepository>(sp =>
+    new ClientRepository(builder.Configuration.GetConnectionString("NeonDB")!)
 );
 
-// Inject Repository
-builder.Services.AddScoped<IClientRepository>(sp =>
-{
-    var dbSettings = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
-    return new ClientRepository(dbSettings.NeonDB);
-});
-
-// Inject Services
+// Services
 builder.Services.AddScoped<ClientService>();
 
 // Swagger
@@ -29,7 +20,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Swagger middlewares
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -37,5 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.MapControllers();
+
 app.Run();
