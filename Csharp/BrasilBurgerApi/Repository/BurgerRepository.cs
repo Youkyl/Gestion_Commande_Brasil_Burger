@@ -12,32 +12,124 @@ public class BurgerRepository : IBurgerRepository
         _connection = connectionString;
     }
 
-    public async Task<IEnumerable<Burger>> GetAllAsync()
+
+    public async Task<Burger?> GetByIdAsync(int id)
+        {
+            using var conn = new NpgsqlConnection(_connection);
+            await conn.OpenAsync();
+
+            string sql = "SELECT * FROM burger WHERE id=@id";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            using var r = await cmd.ExecuteReaderAsync();
+
+            if (!await r.ReadAsync())
+                return null;
+
+            return new Burger
+            {
+                Id = r.GetInt32(r.GetOrdinal("id")),
+                Nom = r.GetString(r.GetOrdinal("nom")),
+                Ingredient = r.IsDBNull(r.GetOrdinal("ingredient")) ? null : r.GetString(r.GetOrdinal("ingredient")),
+                Prix = r.GetDecimal(r.GetOrdinal("prix")),
+                ImageUrl = r.IsDBNull(r.GetOrdinal("image_url")) ? null : r.GetString(r.GetOrdinal("image_url")),
+                IsArchive = r.GetBoolean(r.GetOrdinal("is_archive")),
+                DateCreation = r.GetDateTime(r.GetOrdinal("date_creation"))
+            };
+        }
+
+        public async Task<List<Burger>> GetAllAsync()
+        {
+            var list = new List<Burger>();
+
+            using var conn = new NpgsqlConnection(_connection);
+            await conn.OpenAsync();
+
+            string sql = "SELECT * FROM burger ORDER BY date_creation DESC";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            using var r = await cmd.ExecuteReaderAsync();
+
+            while (await r.ReadAsync())
+            {
+                list.Add(new Burger
+                {
+                    Id = r.GetInt32(r.GetOrdinal("id")),
+                    Nom = r.GetString(r.GetOrdinal("nom")),
+                    Ingredient = r.IsDBNull(r.GetOrdinal("ingredient")) ? null : r.GetString(r.GetOrdinal("ingredient")),
+                    Prix = r.GetDecimal(r.GetOrdinal("prix")),
+                    ImageUrl = r.IsDBNull(r.GetOrdinal("image_url")) ? null : r.GetString(r.GetOrdinal("image_url")),
+                    IsArchive = r.GetBoolean(r.GetOrdinal("is_archive")),
+                    DateCreation = r.GetDateTime(r.GetOrdinal("date_creation"))
+                });
+            }
+
+            return list;
+        }
+
+        public async Task<Burger> CreateAsync(Burger burger)
+        {
+            using var conn = new NpgsqlConnection(_connection);
+            await conn.OpenAsync();
+
+            string sql = @"
+                INSERT INTO burger(nom, ingredient, prix, image_url)
+                VALUES(@nom, @ing, @prix, @url)
+                RETURNING id, date_creation, is_archive;
+            ";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("@nom", burger.Nom);
+            cmd.Parameters.AddWithValue("@ing", (object?)burger.Ingredient ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@prix", burger.Prix);
+            cmd.Parameters.AddWithValue("@url", (object?)burger.ImageUrl ?? DBNull.Value);
+
+            using var r = await cmd.ExecuteReaderAsync();
+            if (await r.ReadAsync())
+            {
+                burger.Id = r.GetInt32(0);
+                burger.DateCreation = r.GetDateTime(1);
+                burger.IsArchive = r.GetBoolean(2);
+            }
+
+            return burger;
+        }
+
+        public async Task<bool> ArchiveAsync(int id)
+        {
+            using var conn = new NpgsqlConnection(_connection);
+            await conn.OpenAsync();
+
+            string sql = "UPDATE burger SET is_archive = TRUE WHERE id = @id";
+
+            using var cmd = new NpgsqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            return await cmd.ExecuteNonQueryAsync() > 0;
+        }
+
+
+public async Task<IEnumerable<Burger>> GetActiveAsync()
     {
-        var result = new List<Burger>();
+        var list = new List<Burger>();
+        using var conn = new NpgsqlConnection(_connection);
+        await conn.OpenAsync();
 
-        using var con = new NpgsqlConnection(_connection);
-        await con.OpenAsync();
-
-        var sql = @"SELECT id, nom, ingredient, prix, image_url, is_archive, date_creation FROM burger";
-
-        using var cmd = new NpgsqlCommand(sql, con);
+        var cmd = new NpgsqlCommand("SELECT * FROM burger WHERE is_archive = FALSE", conn);
         using var reader = await cmd.ExecuteReaderAsync();
 
         while (await reader.ReadAsync())
         {
-            result.Add(new Burger
-            {
-                Id = reader.GetInt32(0),
-                Nom = reader.GetString(1),
-                Ingredient = reader.IsDBNull(2) ? null : reader.GetString(2),
-                Prix = reader.GetDecimal(3),
-                ImageUrl = reader.IsDBNull(4) ? null : reader.GetString(4),
-                IsArchive = reader.GetBoolean(5),
-                DateCreation = reader.GetDateTime(6)
-            });
+            list.Add(Map(reader));
         }
+        return list;
+    }
 
-        return result;
+    private Burger Map(NpgsqlDataReader reader)
+    {
+        throw new NotImplementedException();
     }
 }

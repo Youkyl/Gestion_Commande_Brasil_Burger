@@ -11,8 +11,11 @@ public class Complement
     public string? ImageUrl { get; set; }
     public bool IsArchive { get; set; }
 
-    public string Type { get; set; } = null!;   // ENUM → FRITE | BOISSON
+    public string Type { get; set; } = null!;  
     public int Stock { get; set; }
+
+    public int? RelationQuantite { get; set; }
+    public decimal? RelationPrixUnitaire { get; set; }
 }
 
 }

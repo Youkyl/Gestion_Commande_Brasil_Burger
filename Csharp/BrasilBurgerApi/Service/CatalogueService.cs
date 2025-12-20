@@ -19,7 +19,7 @@ public class CatalogueService
         _complementRepo = complementRepo;
     }
 
-    public Task<IEnumerable<Burger>> GetBurgersAsync() => _burgerRepo.GetAllAsync();
-    public Task<IEnumerable<Menu>> GetMenusAsync() => _menuRepo.GetAllAsync();
-    public Task<IEnumerable<Complement>> GetComplementsAsync() => _complementRepo.GetAllAsync();
+    public Task<List<Burger>> GetBurgersAsync() => _burgerRepo.GetAllAsync();
+    public Task<List<Menu>> GetMenusAsync() => _menuRepo.GetAllAsync();
+    public Task<List<Complement>> GetComplementsAsync() => _complementRepo.GetAllAsync();
 }

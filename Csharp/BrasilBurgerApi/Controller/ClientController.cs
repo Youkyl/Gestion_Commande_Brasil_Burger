@@ -3,6 +3,7 @@ using BrasilBurgerApi.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrasilBurgerApi.Controllers;
+
 [ApiController]
 [Route("api/client")]
 public class ClientController : ControllerBase
@@ -29,12 +30,12 @@ public class ClientController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest dto)
     {
-        var result = await _service.LoginAsync(request);
+        var result = await _service.LoginAsync(dto);
 
         if (result == null)
-            return Unauthorized(new { message = "Email ou mot de passe incorrect" });
+            return Unauthorized(new { message = "Email ou mot de passe incorrect." });
 
         return Ok(result);
     }
