@@ -17,6 +17,11 @@ namespace BrasilBurgerApi.Model
 
         // Navigation
         public List<CommandeDetail> Details { get; set; } = new();
+
+        public static implicit operator int(Commande v)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

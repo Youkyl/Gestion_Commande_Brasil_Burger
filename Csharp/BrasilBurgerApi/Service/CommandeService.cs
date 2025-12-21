@@ -1,3 +1,5 @@
+using BrasilBurgerApi.DTO;
+using BrasilBurgerApi.DTO.Commande;
 using BrasilBurgerApi.Model;
 using BrasilBurgerApi.Repository;
 
@@ -23,7 +25,6 @@ public class CommandeService
     {
         _commandeRepo = commandeRepo;
         _detailRepo = detailRepo;
-        _complementRepo = complementRepo;
         _burgerRepo = burgerRepo;
         _menuRepo = menuRepo;
         _complRepo = complRepo;
@@ -105,7 +106,7 @@ public class CommandeService
 
         var saved = await _complementRepo.AddComplementAsync(detailComp);
 
-        // Recalcule total de la commande
+
         var detail = await _detailRepo.GetByCommandeIdAsync(detailId);
         await RecalculateTotal(detail.First().CommandeId);
 
@@ -142,4 +143,98 @@ public class CommandeService
     {
         return await _commandeRepo.GetCommandeByReferenceAsync(reference);
     }
+
+
+     public async Task<int> CreateAsync(CreateCommande dto)
+    {
+        decimal montantTotal = 0;
+
+
+        string reference = $"CMD-{DateTime.UtcNow.Ticks}";
+
+        var commande = new Commande
+        {
+            Reference = reference,
+            TypeCommande = dto.TypeCommande,
+            ClientId = dto.ClientId,
+            ZoneId = dto.ZoneId,
+            MontantTotal = 0
+        };
+
+        int commandeId = await _commandeRepo.CreateCommandeAsync(commande);
+
+
+        foreach (var item in dto.Burgers)
+        {
+            var burger = await _burgerRepo.GetByIdAsync(item.BurgerId);
+            var prix = burger.Prix;
+
+            montantTotal += prix * item.Quantite;
+
+            var detailId = await _commandeRepo.CreateDetailAsync(new CommandeDetail
+            {
+                CommandeId = commandeId,
+                BurgerId = burger.Id,
+                Quantite = item.Quantite,
+                PrixUnitaire = prix
+            });
+
+
+            foreach (var comp in item.Complements)
+            {
+                var complement = await _complRepo.GetByIdAsync(comp.ComplementId);
+                montantTotal += complement.Prix * comp.Quantite;
+
+                await _commandeRepo.CreateComplementAsync(new CommandeComplement
+                {
+                    CommandeDetailId = detailId,
+                    ComplementId = comp.ComplementId,
+                    Quantite = comp.Quantite,
+                    PrixUnitaire = complement.Prix
+                });
+            }
+        }
+
+
+        foreach (var item in dto.Menus)
+        {
+            var menu = await _menuRepo.GetByIdAsync(item.MenuId);
+            var prix = menu.Prix;
+
+            montantTotal += (decimal)(prix * item.Quantite);
+
+            var detailId = await _commandeRepo.CreateDetailAsync(new CommandeDetail
+            {
+                CommandeId = commandeId,
+                MenuId = menu.Id,
+                Quantite = item.Quantite,
+                PrixUnitaire = (decimal)prix
+            });
+            
+
+            foreach (var comp in item.Complements)
+            {
+                var complement = await _complRepo.GetByIdAsync(comp.ComplementId);
+                montantTotal += complement.Prix * comp.Quantite;
+
+                await _commandeRepo.CreateComplementAsync(new CommandeComplement
+                {
+                    CommandeDetailId = detailId,
+                    ComplementId = comp.ComplementId,
+                    Quantite = comp.Quantite,
+                    PrixUnitaire = complement.Prix
+                });
+            }
+        }
+
+
+        commande.Id = commandeId;
+        commande.MontantTotal = montantTotal;
+
+        return commandeId;
+    }
+
+
+
+
 }

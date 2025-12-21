@@ -11,4 +11,5 @@ public interface IBurgerRepository
         Task<Burger> CreateAsync(Burger burger);
         Task<bool> ArchiveAsync(int id);
         Task<IEnumerable<Burger>> GetActiveAsync();
+        
 }
