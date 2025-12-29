@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Gestionnaire{% endblock %}
+
+{% block body %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
+        </div>
+    {% endif %}
+<h1>Dashboard Gestionnaire</h1>
+
+<p>Bienvenue, vous êtes connecté en tant que gestionnaire.</p>
+
+<ul>
+    <li><a href="#">Voir les commandes</a></li>
+    <li><a href="#">Voir les statistiques</a></li>
+</ul>
+{% endblock %}

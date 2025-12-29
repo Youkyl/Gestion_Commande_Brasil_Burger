@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commandes{% endblock %}
+
+{% block body %}
+<h1>Liste des commandes</h1>
+
+<table border="1" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Référence</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Type</th>
+            <th>État</th>
+            <th>Montant</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for commande in commandes %}
+        <tr>
+            <td>{{ commande.reference }}</td>
+            <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
+            <td>{{ commande.client.nom }} {{ commande.client.prenom }}</td>
+            <td>{{ commande.typeCommande }}</td>
+            <td>{{ commande.etat }}</td>
+            <td>{{ commande.montantTotal }} FCFA</td>
+            <td>
+                <a href="{{ path('commande_show', {id: commande.id}) }}">Voir</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7">Aucune commande</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

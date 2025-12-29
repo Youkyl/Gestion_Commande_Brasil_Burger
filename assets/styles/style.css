@@ -1,0 +1,111 @@
+* {
+    box-sizing: border-box;
+    font-family: Inter, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f6f6f6;
+}
+
+/* LAYOUT */
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(180deg,#ff6a00,#d60000);
+    color: #fff;
+    padding: 24px;
+}
+
+.sidebar nav a {
+    display: block;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+    background: rgba(255,255,255,.2);
+}
+
+/* CONTENT */
+.content {
+    flex: 1;
+    padding: 24px;
+}
+
+/* HEADER */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-primary {
+    background: #ff3d3d;
+    border: none;
+    padding: 10px 18px;
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* FILTERS */
+.filters {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.filters input,
+.filters select {
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+}
+
+/* TABLE */
+.table-wrapper {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: #888;
+    font-weight: 500;
+}
+
+td {
+    padding: 14px 0;
+    border-top: 1px solid #eee;
+}
+
+/* BADGES */
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.badge.success { background: #e6f7ee; color: #1aaa55; }
+.badge.danger { background: #fdecea; color: #e53935; }
+
+/* ACTIONS */
+.actions i {
+    margin-right: 10px;
+    cursor: pointer;
+}
