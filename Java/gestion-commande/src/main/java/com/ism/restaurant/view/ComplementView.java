@@ -3,7 +3,6 @@ package com.ism.restaurant.view;
 import java.util.List;
 import java.util.Scanner;
 
-import com.ism.restaurant.model.Burger;
 import com.ism.restaurant.model.Complement;
 import com.ism.restaurant.model.TypeComplement;
 import com.ism.restaurant.service.ComplementService;
