@@ -51,4 +51,36 @@ class CommandeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function countByEtatToday(string $etat): int
+    {
+        $debut = new \DateTime('today 00:00:00');
+        $fin = new \DateTime('today 23:59:59');
+
+        return (int) $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.etat = :etat')
+            ->andWhere('c.date_commande BETWEEN :debut AND :fin')
+            ->setParameter('etat', $etat)
+            ->setParameter('debut', $debut)
+            ->setParameter('fin', $fin)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function recettesJour(): float
+    {
+        $debut = new \DateTime('today 00:00:00');
+        $fin = new \DateTime('today 23:59:59');
+
+        return (float) $this->createQueryBuilder('c')
+            ->select('SUM(c.montant_total)')
+            ->where('c.etat = :etat')
+            ->andWhere('c.date_commande BETWEEN :debut AND :fin')
+            ->setParameter('etat', 'PAYEE')
+            ->setParameter('debut', $debut)
+            ->setParameter('fin', $fin)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

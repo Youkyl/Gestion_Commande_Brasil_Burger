@@ -1,0 +1,234 @@
+{% extends 'base.html.twig' %}
+{% block title %}Gestion des produits{% endblock %}
+
+{% block body %}
+<style>
+/* ========== GLOBAL ========== */
+body {
+  margin:0;
+  font-family: Inter, Segoe UI, sans-serif;
+  background:#fafafa;
+}
+.app { display:flex; min-height:100vh; }
+
+
+/* ========== MAIN ========== */
+.main {
+  margin-left: 300px;
+  flex: 1;
+  padding: 32px;
+  width: calc(100% - 300px);
+}
+
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ========== HEADER ========== */
+.header {
+  display:flex; justify-content:space-between; align-items:center;
+}
+.header h1 { font-size:32px; margin:0; }
+.header p { color:#6b7280; }
+
+.add-btn {
+  background:linear-gradient(90deg,#ff6900,#e7000b);
+  color:white; border:none;
+  padding:12px 20px;
+  border-radius:14px;
+  cursor:pointer;
+}
+
+/* ========== SEARCH & FILTER ========== */
+.filters {
+  display:flex; justify-content:space-between;
+  margin:24px 0;
+}
+.search {
+  flex:1;
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+}
+.tabs button {
+  padding:10px 14px;
+  border:none;
+  border-radius:12px;
+  margin-left:8px;
+  cursor:pointer;
+}
+.tabs .active {
+  background:#ff6900; color:white;
+}
+
+/* ========== PRODUCTS GRID ========== */
+.grid {
+  display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap:24px;
+}
+.card {
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+.badge {
+  font-size:12px;
+  padding:4px 10px;
+  border-radius:999px;
+  background:#ffedd4;
+  color:#ca3500;
+  float:right;
+}
+.price {
+  color:#ff6900;
+  font-weight:700;
+  margin:12px 0;
+}
+.card-actions {
+  display:flex; gap:12px;
+}
+.btn-blue {
+  flex:1;
+  background:#2563eb;
+  color:white; border:none;
+  padding:10px; border-radius:12px;
+}
+.btn-dark {
+  flex:1;
+  background:#374151;
+  color:white; border:none;
+  padding:10px; border-radius:12px;
+}
+
+.product-image {
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  border-radius:16px;
+  margin-bottom:12px;
+}
+
+/* ========== MODAL ========== */
+.modal {
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+}
+.modal-content {
+  background:white;
+  width:460px;
+  border-radius:20px;
+  padding:24px;
+}
+.modal-header {
+  display:flex; justify-content:space-between;
+  margin-bottom:16px;
+}
+.modal input, .modal textarea {
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+}
+.modal-actions {
+  display:flex; gap:12px;
+}
+.btn-cancel {
+  flex:1;
+  background:#e5e7eb;
+  border:none;
+  padding:12px;
+  border-radius:14px;
+}
+.btn-save {
+  flex:1;
+  background:#ff6900;
+  color:white;
+  border:none;
+  padding:12px;
+  border-radius:14px;
+}
+</style>
+
+{% block active_produit %}class="active"{% endblock %}
+<div class="app">
+
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="header">
+      <div>
+        <h1>Gestion des produits</h1>
+        <p>Gérez vos burgers, menus et compléments sur l'application Java</p>
+      </div>
+      <button class="add-btn" onclick="openAdd()">+ Ajouter un produit</button>
+    </div>
+
+    <div class="filters">
+      <input class="search" placeholder="Rechercher un produit...">
+      <div class="tabs">
+        <button >
+            <a href="{{ path('produit') }}"> Tout </a>
+        </button>
+
+        <button>
+            <a href="{{ path('burger') }}"> Burgers </a>
+        </button>
+
+        <button class="active" >
+            <a href="{{ path('menu') }}"> Menus </a>
+        </button>
+        
+        <button>
+            <a href="{{ path('complement') }}"> Compléments </a>
+        </button>
+      </div>
+    </div>
+
+    <h3>Produits actifs ({{ menu|length }})</h3>
+
+    <div class="grid">
+      {% for m in menu %}
+      <div class="card">
+        <img src="{{ m.image }}" alt="{{ m.nom }}" class="product-image">
+        <span class="badge">{{ m.type }}</span>
+        <h4>{{ m.nom }}</h4>
+        <p>{{ m.description }}</p>
+        <div class="price">{{ m.prix }} FCFA</div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Ajouter un produit</h3>
+      <button onclick="closeModal()">✕</button>
+    </div>
+    <input placeholder="Type de produit">
+    <input id="nom" placeholder="Nom">
+    <textarea placeholder="Description"></textarea>
+    <input id="prix" placeholder="Prix FCFA">
+    <input placeholder="URL de l'image">
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-save">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

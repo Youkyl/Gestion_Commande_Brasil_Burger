@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $isActif = TRUE;
+
+    /**
+     * @var Collection<int, HistoriqueEtatCommande>
+     */
+    #[ORM\OneToMany(targetEntity: HistoriqueEtatCommande::class, mappedBy: 'gestionnaire')]
+    private Collection $historiqueEtatCommandes;
+
+    public function __construct()
+    {
+        $this->historiqueEtatCommandes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +117,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsActif(bool $isActif): static
     {
         $this->isActif = $isActif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HistoriqueEtatCommande>
+     */
+    public function getHistoriqueEtatCommandes(): Collection
+    {
+        return $this->historiqueEtatCommandes;
+    }
+
+    public function addHistoriqueEtatCommande(HistoriqueEtatCommande $historiqueEtatCommande): static
+    {
+        if (!$this->historiqueEtatCommandes->contains($historiqueEtatCommande)) {
+            $this->historiqueEtatCommandes->add($historiqueEtatCommande);
+            $historiqueEtatCommande->setGestionnaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueEtatCommande(HistoriqueEtatCommande $historiqueEtatCommande): static
+    {
+        if ($this->historiqueEtatCommandes->removeElement($historiqueEtatCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueEtatCommande->getGestionnaire() === $this) {
+                $historiqueEtatCommande->setGestionnaire(null);
+            }
+        }
 
         return $this;
     }

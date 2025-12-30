@@ -43,6 +43,7 @@ security:
     # Note: Only the *first* matching rule is applied
     access_control:
          - { path: ^/gestionnaire, roles: ROLE_GESTIONNAIRE }
+         - { path: ^/statistique, roles: ROLE_GESTIONNAIRE }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

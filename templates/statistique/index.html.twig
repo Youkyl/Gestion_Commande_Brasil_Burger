@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques{% endblock %}
+
+
+
+{% block body %}
+<h1>Statistiques du jour</h1>
+
+<ul>
+    <li>Commandes en cours : <strong>{{ enCours }}</strong></li>
+    <li>Commandes validées : <strong>{{ validees }}</strong></li>
+    <li>Commandes annulées : <strong>{{ annulees }}</strong></li>
+    <li>Recettes journalières : <strong>{{ recettes }} FCFA</strong></li>
+</ul>
+
+<h3>Produits les plus vendus</h3>
+<ul>
+{% for p in topProduits %}
+    <li>{{ p.produit }} — {{ p.total }} ventes</li>
+{% else %}
+    <li>Aucune vente aujourd’hui</li>
+{% endfor %}
+</ul>
+{% endblock %}

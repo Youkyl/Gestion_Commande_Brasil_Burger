@@ -22,5 +22,87 @@
     <li><strong>Email :</strong> {{ commande.client.email }}</li>
 </ul>
 
+ <h3>Paiement</h3>
+    {% if commande.paiement %}
+        <ul>
+            <li><strong>Mode :</strong> {{ commande.paiement.mode }}</li>
+            <li><strong>Montant :</strong> {{ commande.paiement.montant }} FCFA</li>
+            <li><strong>Statut :</strong> {{ commande.paiement.statut }}</li>
+            <li><strong>Date :</strong> {{ commande.paiement.datePaiement|date('d/m/Y H:i') }}</li>
+        </ul>
+    {% else %}
+        <p><em>Aucun paiement enregistré pour cette commande.</em></p>
+    {% endif %}
+
+
+
+<h3>Produits commandés</h3>
+
+<table border="1" cellpadding="6">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Type</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for detail in commande.commandeDetails %}
+        <tr>
+            <td>
+                {% if detail.burger %}
+                    {{ detail.burger.nom }}
+                {% elseif detail.menu %}
+                    {{ detail.menu.nom }}
+                {% endif %}
+            </td>
+            <td>
+                {% if detail.burger %}Burger{% else %}Menu{% endif %}
+            </td>
+            <td>{{ detail.quantite }}</td>
+            <td>{{ detail.prixUnitaire }} FCFA</td>
+        </tr>
+
+        {% if detail.commandeComplements|length > 0 %}
+            <tr>
+                <td colspan="4">
+                    <strong>Compléments :</strong>
+                    <ul>
+                        {% for cc in detail.commandeComplements %}
+                            <li>
+                                {{ cc.complement.nom }}
+                                ({{ cc.complement.type }}) —
+                                {{ cc.quantite }} × {{ cc.prixUnitaire }} FCFA
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        {% endif %}
+        
+    {% else %}
+        <tr>
+            <td colspan="4">Aucun produit</td>
+        </tr>
+    {% endfor %}
+    
+    </tbody>
+</table>
+<br>
+
+<h3>Actions gestionnaire</h3>
+
+<form method="post" action="{{ path('commande_change_etat', {id: commande.id}) }}">
+    <select name="etat">
+        <option value="PAYEE">Marquer comme PAYÉE</option>
+        <option value="TERMINEE">Marquer comme TERMINÉE</option>
+        <option value="ANNULEE">ANNULER la commande</option>
+    </select>
+    <button type="submit">Valider</button>
+</form>
+
+
+
 <a href="{{ path('commande_index') }}">← Retour à la liste</a>
 {% endblock %}

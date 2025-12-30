@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use App\Repository\CommandeRepository;
 use App\Entity\Client;
+use App\Entity\CommandeDetail;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,6 +38,27 @@ class Commande
     #[ORM\ManyToOne (targetEntity: Client::class)]
     #[ORM\JoinColumn(name: "client_id", referencedColumnName: "id")]
     private ?Client $client;
+
+    #[ORM\OneToOne(mappedBy: 'commande', targetEntity: Paiement::class)]
+    private ?Paiement $paiement = null;
+
+    /**
+     * @var Collection<int, CommandeDetail>
+     */
+    #[ORM\OneToMany(targetEntity: CommandeDetail::class, mappedBy: 'commande')]
+    private Collection $commandeDetails;
+
+    /**
+     * @var Collection<int, HistoriqueEtatCommande>
+     */
+    #[ORM\OneToMany(targetEntity: HistoriqueEtatCommande::class, mappedBy: 'commande')]
+    private Collection $historiqueEtatCommandes;
+
+    public function __construct()
+    {
+        $this->commandeDetails = new ArrayCollection();
+        $this->historiqueEtatCommandes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,4 +136,72 @@ class Commande
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, CommandeDetail>
+     */
+    public function getCommandeDetails(): Collection
+    {
+        return $this->commandeDetails;
+    }
+
+    public function addCommandeDetail(CommandeDetail $commandeDetail): static
+    {
+        if (!$this->commandeDetails->contains($commandeDetail)) {
+            $this->commandeDetails->add($commandeDetail);
+            $commandeDetail->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommandeDetail(CommandeDetail $commandeDetail): static
+    {
+        if ($this->commandeDetails->removeElement($commandeDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($commandeDetail->getCommande() === $this) {
+                $commandeDetail->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function getPaiement(): ?Paiement
+    {
+        return $this->paiement;
+    }
+
+    /**
+     * @return Collection<int, HistoriqueEtatCommande>
+     */
+    public function getHistoriqueEtatCommandes(): Collection
+    {
+        return $this->historiqueEtatCommandes;
+    }
+
+    public function addHistoriqueEtatCommande(HistoriqueEtatCommande $historiqueEtatCommande): static
+    {
+        if (!$this->historiqueEtatCommandes->contains($historiqueEtatCommande)) {
+            $this->historiqueEtatCommandes->add($historiqueEtatCommande);
+            $historiqueEtatCommande->setCommande($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueEtatCommande(HistoriqueEtatCommande $historiqueEtatCommande): static
+    {
+        if ($this->historiqueEtatCommandes->removeElement($historiqueEtatCommande)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueEtatCommande->getCommande() === $this) {
+                $historiqueEtatCommande->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CommandeDetailRepository;
+use App\Repository\CommandeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,15 +27,31 @@ class GestinaireController extends AbstractController
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    public function logout(): Response
     {
+        return $this->render('security/login.html.twig');
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
 
     #[Route('/gestionnaire', name: 'dashboard')]
-    public function index(): Response
-    {
-        return $this->render('gestionnaire/dashboard.html.twig');
+    public function index(
+        CommandeRepository $commandeRepo,
+        CommandeDetailRepository $detailRepo
+    ): Response {
+        return $this->render('gestionnaire/dashboard.html.twig', [
+            'dateJour' => new \DateTime(),
+            'enCours' => $commandeRepo->countByEtatToday('EN_COURS'),
+            'validees' => $commandeRepo->countByEtatToday('PAYEE'),
+            'annulees' => $commandeRepo->countByEtatToday('ANNULEE'),
+            'recettes' => $commandeRepo->recettesJour(),
+            'topProduits' => $detailRepo->topProduitsJour(),
+            'recentes' => $commandeRepo->findBy(
+                [],
+                ['date_commande' => 'DESC'],
+                5
+            ),
+        ]);
+    
     }
 }
