@@ -1,40 +1,172 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Commandes{% endblock %}
+{% block title %}Gestion des commandes{% endblock %}
 
 {% block body %}
-<h1>Liste des commandes</h1>
+<style>
+/* ===== LAYOUT ===== */
+.page { display:flex; background:#fafafa; min-height:100vh; }
+.main { margin-left:288px; padding:32px; width:100%; }
 
-<table border="1" cellpadding="8">
-    <thead>
-        <tr>
-            <th>Référence</th>
-            <th>Date</th>
+/* ===== HEADER ===== */
+h1 { margin:0; font-size:32px; }
+.subtitle { color:#6b7280; margin-bottom:24px; }
+
+/* ===== SEARCH ===== */
+.search {
+  width:100%; padding:14px 18px; border-radius:16px;
+  border:1px solid #e5e7eb; margin-bottom:16px;
+}
+
+/* ===== FILTERS ===== */
+.filters { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+.chip {
+  padding:6px 14px; border-radius:999px;
+  font-size:13px; cursor:pointer;
+  background:#f3f4f6;
+}
+.chip.active { background:#ff6900; color:white; }
+
+/* ===== TABLE ===== */
+.table {
+  background:white; border-radius:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  overflow:hidden;
+}
+table { width:100%; border-collapse:collapse; }
+th, td {
+  padding:14px; font-size:14px;
+  border-bottom:1px solid #f3f4f6;
+  text-align:left;
+}
+th { color:#6b7280; font-weight:600; }
+
+/* ===== BADGES ===== */
+.badge {
+  padding:4px 10px; border-radius:999px; font-size:12px;
+}
+.prep { background:#dbeafe; color:#1d4ed8; }
+.ready { background:#ede9fe; color:#7c3aed; }
+.done { background:#dcfce7; color:#15803d; }
+.wait { background:#fef3c7; color:#92400e; }
+.cancel { background:#fee2e2; color:#b91c1c; }
+
+.link { color:#ff6900; cursor:pointer; }
+</style>
+
+<div class="page">
+
+
+  <main class="main">
+    <h1>Gestion des commandes</h1>
+    <div class="subtitle">Suivez et gérez toutes les commandes</div>
+
+    <input class="search" placeholder="Rechercher par numéro, client ou produit…">
+
+    <!-- FILTRES -->
+    <div class="filters">
+      <div class="chip active">Toutes</div>
+      <div class="chip">En attente</div>
+      <div class="chip">En préparation</div>
+      <div class="chip">Prête</div>
+      <div class="chip">Terminée</div>
+      <div class="chip">Annulée</div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>Commande</th>
             <th>Client</th>
+            <th>Articles</th>
             <th>Type</th>
-            <th>État</th>
             <th>Montant</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for commande in commandes %}
-        <tr>
-            <td>{{ commande.reference }}</td>
-            <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
-            <td>{{ commande.client.nom }} {{ commande.client.prenom }}</td>
-            <td>{{ commande.typeCommande }}</td>
-            <td>{{ commande.etat }}</td>
-            <td>{{ commande.montantTotal }} FCFA</td>
+            <th>Paiement</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for c in commandes %}
+          <tr>
             <td>
-                <a href="{{ path('commande_show', {id: commande.id}) }}">Voir</a>
+              <strong>{{ c.reference }}</strong><br>
+              <small>{{ c.dateCommande|date('d/m/Y H:i') }}</small>
             </td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="7">Aucune commande</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+            <td>
+              {{ c.client.nom }} {{ c.client.prenom }}<br>
+              <small>{{ c.client.telephone }}</small>
+            </td>
+            <td>
+                {% for d in c.commandeDetails %}
+                    
+                    {# Burger ou Menu #}
+                    {% if d.burger %}
+                    {{ d.burger.nom }}
+                    {% elseif d.menu %}
+                    {{ d.menu.nom }}
+                    {% endif %}
+
+                    {# Quantité #}
+                    {% if d.quantite > 1 %}
+                    x{{ d.quantite }}
+                    {% endif %}
+
+                    {# Compléments #}
+                    {% if d.commandeComplements|length > 0 %}
+                    (
+                    {% for cc in d.commandeComplements %}
+                        {{ cc.complement.nom }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                    )
+                    {% endif %}
+
+                    {# Séparateur entre lignes #}
+                    {% if not loop.last %}<br>{% endif %}
+
+                {% else %}
+                    <em>Aucun article</em>
+                {% endfor %}
+                </td>
+            <td><span class="badge wait">{{ c.typeCommande }}</span></td>
+            <td>{{ c.montantTotal }} FCFA</td>
+<td>
+  {% if c.paiement %}
+    {{ c.paiement.mode|replace({'_':' '}) }}<br>
+    <span class="badge done">Payé</span>
+  {% else %}
+    <em>Non payé</em><br>
+    <span class="badge wait">En attente</span>
+  {% endif %}
+</td>
+            <td>
+              <span class="badge
+                {{ c.etat == 'EN_COURS' ? 'prep' :
+                   c.etat == 'TERMINEE' ? 'done' :
+                   c.etat == 'ANNULEE' ? 'cancel' :
+                   'wait' }}">
+                {{ c.etat|replace({'_':' '}) }}
+              </span>
+            </td>
+            <td>
+              <span class="link" onclick="openModal({{ c.id }})">Détails</span>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script>
+function openModal(id) {
+  fetch('/commande/' + id)
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML('beforeend', html);
+    });
+}
+</script>
 {% endblock %}
