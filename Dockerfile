@@ -62,4 +62,4 @@ RUN mkdir -p var/cache var/log && chmod -R 777 var
 
 EXPOSE 10000
 
-CMD ["php", "-S", "0.0.0.0:10000", "-t", "public"]
+CMD ["php", "-S", "0.0.0.0:10000", "-t", "public", "public/index.php"]
