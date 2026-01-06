@@ -3,9 +3,15 @@
 {% block title %}Statistiques{% endblock %}
 
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/statistique.css') }}">
+{% endblock %}
 
 {% block body %}
-<h1>Statistiques du jour</h1>
+<div class="gestionnaire">
+  <main class="main">
+    <h1>Statistiques du jour</h1>
 
 <ul>
     <li>Commandes en cours : <strong>{{ enCours }}</strong></li>
@@ -22,4 +28,6 @@
     <li>Aucune vente aujourd’hui</li>
 {% endfor %}
 </ul>
+  </main>
+</div>
 {% endblock %}

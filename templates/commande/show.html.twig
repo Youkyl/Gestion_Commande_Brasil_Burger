@@ -2,8 +2,15 @@
 
 {% block title %}Détail commande{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/pages/commande-show.css') }}">
+{% endblock %}
+
 {% block body %}
-<h1>Détail de la commande</h1>
+<div class="gestionnaire">
+  <main class="main">
+    <h1>Détail de la commande</h1>
 
 <h3>Informations générales</h3>
 <ul>
@@ -105,4 +112,6 @@
 
 
 <a href="{{ path('commande_index') }}">← Retour à la liste</a>
+  </main>
+</div>
 {% endblock %}

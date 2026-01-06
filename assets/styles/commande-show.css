@@ -1,0 +1,79 @@
+/* Styles pour la page détail commande */
+.main { max-width: 1200px; margin: 0 auto; padding: 32px; }
+
+h1 { font-size: 32px; margin-bottom: 24px; color: #101828; }
+
+h3 {
+  font-size: 20px;
+  margin: 24px 0 12px 0;
+  color: #374151;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 8px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+}
+
+form {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+select {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+button[type="submit"] {
+  padding: 10px 24px;
+  background: linear-gradient(90deg, #ff6900, #e7000b);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main { padding: 16px; }
+  h1 { font-size: 24px; }
+  table { font-size: 14px; }
+  form { flex-direction: column; }
+  select, button { width: 100%; }
+}
