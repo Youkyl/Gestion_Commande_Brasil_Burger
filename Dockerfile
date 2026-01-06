@@ -1,4 +1,4 @@
-FROM php:8.3-cli
+FROM php:8.4-cli
 
 # Dépendances système + extensions PHP complètes Symfony
 RUN apt-get update && apt-get install -y \
@@ -31,19 +31,28 @@ RUN apt-get update && apt-get install -y \
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Variables Composer IMPORTANTES
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV COMPOSER_MEMORY_LIMIT=-1
+
 WORKDIR /app
 
 # Copier les fichiers Composer
-COPY composer.json composer.lock ./
+COPY composer.json composer.lock symfony.lock* ./
 
-# Installer dépendances (plateforme strictement compatible)
+# Installer dépendances
 RUN composer install \
     --no-dev \
     --no-scripts \
-    --no-interaction
+    --no-interaction \
+    --optimize-autoloader \
+    --prefer-dist
 
 # Copier le reste du projet
 COPY . .
+
+# Variables d'environnement
+ENV APP_ENV=prod
 
 # Cache Symfony (tolérant DB absente)
 RUN php bin/console cache:clear --env=prod || true
