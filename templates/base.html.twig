@@ -8,9 +8,10 @@
 
         {% block bootstrap %}{% endblock %}
 
-        {% block stylesheets %}
-            <link rel="stylesheet" href="../../assets/styles/app.css">
-        {% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/styles/app.css">
+    <link rel="stylesheet" href="/assets/styles/components.css">
+{% endblock %}
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}

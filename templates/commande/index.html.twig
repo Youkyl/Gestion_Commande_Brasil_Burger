@@ -1,57 +1,14 @@
 {% extends 'base.html.twig' %}
 {% block title %}Gestion des commandes{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/assets/styles/pages/commande.css">
+{% endblock %}
+
+{% block active_commandes %}class="active"{% endblock %}
+
 {% block body %}
-<style>
-/* ===== LAYOUT ===== */
-.page { display:flex; background:#fafafa; min-height:100vh; }
-.main { margin-left:288px; padding:32px; width:100%; }
-
-/* ===== HEADER ===== */
-h1 { margin:0; font-size:32px; }
-.subtitle { color:#6b7280; margin-bottom:24px; }
-
-/* ===== SEARCH ===== */
-.search {
-  width:100%; padding:14px 18px; border-radius:16px;
-  border:1px solid #e5e7eb; margin-bottom:16px;
-}
-
-/* ===== FILTERS ===== */
-.filters { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
-.chip {
-  padding:6px 14px; border-radius:999px;
-  font-size:13px; cursor:pointer;
-  background:#f3f4f6;
-}
-.chip.active { background:#ff6900; color:white; }
-
-/* ===== TABLE ===== */
-.table {
-  background:white; border-radius:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
-  overflow:hidden;
-}
-table { width:100%; border-collapse:collapse; }
-th, td {
-  padding:14px; font-size:14px;
-  border-bottom:1px solid #f3f4f6;
-  text-align:left;
-}
-th { color:#6b7280; font-weight:600; }
-
-/* ===== BADGES ===== */
-.badge {
-  padding:4px 10px; border-radius:999px; font-size:12px;
-}
-.prep { background:#dbeafe; color:#1d4ed8; }
-.ready { background:#ede9fe; color:#7c3aed; }
-.done { background:#dcfce7; color:#15803d; }
-.wait { background:#fef3c7; color:#92400e; }
-.cancel { background:#fee2e2; color:#b91c1c; }
-
-.link { color:#ff6900; cursor:pointer; }
-</style>
 
 <div class="page">
 
