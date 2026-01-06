@@ -26,19 +26,20 @@ RUN apt-get update && apt-get install -y \
         iconv \
         xml \
         curl \
-        sodium
+        sodium \
+    && rm -rf /var/lib/apt/lists/*
 
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Variables Composer IMPORTANTES
+# Variables Composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_MEMORY_LIMIT=-1
 
 WORKDIR /app
 
 # Copier les fichiers Composer
-COPY composer.json composer.lock symfony.lock* ./
+COPY composer.json composer.lock symfony.lock ./
 
 # Installer dépendances
 RUN composer install \
@@ -51,14 +52,19 @@ RUN composer install \
 # Copier le reste du projet
 COPY . .
 
-# Variables d'environnement
+# Variables d'environnement Symfony
 ENV APP_ENV=prod
+ENV APP_DEBUG=0
 
-# Cache Symfony (tolérant DB absente)
-RUN php bin/console cache:clear --env=prod || true
+# Générer le cache et assets
+RUN php bin/console cache:clear --env=prod --no-warmup && \
+    php bin/console cache:warmup --env=prod && \
+    php bin/console assets:install public --env=prod --symlink --relative || \
+    php bin/console assets:install public --env=prod
 
 # Permissions Symfony
-RUN mkdir -p var/cache var/log && chmod -R 777 var
+RUN mkdir -p var/cache var/log && \
+    chmod -R 777 var
 
 EXPOSE 10000
 
