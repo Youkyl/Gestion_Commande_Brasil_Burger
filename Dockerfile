@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-# Dépendances système
+# Dépendances système + extensions PHP requises par Symfony
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libonig-dev \
+    libxml2-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pdo \
@@ -18,27 +19,29 @@ RUN apt-get update && apt-get install -y \
         zip \
         intl \
         gd \
-        mbstring
+        mbstring \
+        ctype \
+        iconv \
+        xml
 
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# Copier composer en premier (cache Docker)
+# Copier les fichiers Composer
 COPY composer.json composer.lock ./
 
-# Désactiver les scripts auto Symfony pendant le build
+# Installer les dépendances (mode prod)
 RUN composer install \
     --no-dev \
     --no-scripts \
-    --no-interaction \
-    --ignore-platform-reqs
+    --no-interaction
 
 # Copier le reste du projet
 COPY . .
 
-# Lancer les scripts Symfony manuellement
+# Cache Symfony (sans bloquer si DB absente)
 RUN php bin/console cache:clear --env=prod || true
 
 # Permissions Symfony
