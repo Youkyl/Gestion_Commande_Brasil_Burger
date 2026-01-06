@@ -1,6 +1,6 @@
-FROM php:8.2-cli
+FROM php:8.3-cli
 
-# Dépendances système + extensions PHP requises par Symfony
+# Dépendances système + extensions PHP complètes Symfony
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
+    libcurl4-openssl-dev \
+    libsodium-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         pdo \
@@ -22,7 +24,9 @@ RUN apt-get update && apt-get install -y \
         mbstring \
         ctype \
         iconv \
-        xml
+        xml \
+        curl \
+        sodium
 
 # Installer Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -32,7 +36,7 @@ WORKDIR /app
 # Copier les fichiers Composer
 COPY composer.json composer.lock ./
 
-# Installer les dépendances (mode prod)
+# Installer dépendances (plateforme strictement compatible)
 RUN composer install \
     --no-dev \
     --no-scripts \
@@ -41,7 +45,7 @@ RUN composer install \
 # Copier le reste du projet
 COPY . .
 
-# Cache Symfony (sans bloquer si DB absente)
+# Cache Symfony (tolérant DB absente)
 RUN php bin/console cache:clear --env=prod || true
 
 # Permissions Symfony
