@@ -33,7 +33,7 @@ RUN composer install \
     --no-dev \
     --no-scripts \
     --no-interaction \
-    -vvv
+    --ignore-platform-reqs
 
 # Copier le reste du projet
 COPY . .
