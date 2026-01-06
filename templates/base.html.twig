@@ -32,7 +32,7 @@
                     <nav class="nav">
                     <a href="{{ path('dashboard') }}" {% block active_dashboard %}{% endblock %} ><i data-lucide="layout-dashboard"></i> Dashboard</a>
                     <a href="{{ path('produit') }}" {% block active_produit %}{% endblock %} ><i data-lucide="package"></i> Produits</a>
-                    <a><i data-lucide="shopping-cart" {% block active_commandes %}{% endblock %}></i> Commandes</a>
+                    <a href="{{ path('commande') }}" {% block active_commandes %}{% endblock %} ><i data-lucide="shopping-cart" ></i> Commandes</a>
                     <a><i data-lucide="map" {% block active_zones %}{% endblock %}></i> Zones</a>
                     <a><i data-lucide="users" {% block active_clients %}{% endblock %}></i> Clients</a>
                     <a><i data-lucide="truck" {% block active_livreurs %}{% endblock %}></i> Livreurs</a>

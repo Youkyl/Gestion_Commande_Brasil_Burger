@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class CommandeController extends AbstractController
 {
-    #[Route(path:'/commande', name: 'commande_index')]
+    #[Route(path:'/commande', name: 'commande')]
     public function index(CommandeRepository $commandeRepository): Response
     {
         return $this->render('commande/index.html.twig', [
