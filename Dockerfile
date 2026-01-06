@@ -31,9 +31,9 @@ COPY composer.json composer.lock ./
 # Désactiver les scripts auto Symfony pendant le build
 RUN composer install \
     --no-dev \
-    --optimize-autoloader \
     --no-scripts \
-    --no-interaction
+    --no-interaction \
+    -vvv
 
 # Copier le reste du projet
 COPY . .
