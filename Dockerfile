@@ -59,6 +59,7 @@ ENV APP_DEBUG=0
 # Générer le cache et assets
 RUN php bin/console cache:clear --env=prod --no-warmup && \
     php bin/console cache:warmup --env=prod && \
+    php bin/console importmap:install && \
     php bin/console assets:install public --env=prod --symlink --relative || \
     php bin/console assets:install public --env=prod
 
