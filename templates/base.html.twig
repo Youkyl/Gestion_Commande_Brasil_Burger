@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Brasil Burger{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🍔</text></svg>">
 
         {% block bootstrap %}{% endblock %}
 
@@ -21,39 +22,67 @@
 
         {% block navbar %}
         
+            <!-- Bouton menu mobile -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Overlay mobile -->
+            <div class="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+
             <div class="gestionnaire">
                 <!-- SIDEBAR -->
-                <aside class="sidebar">
+                <aside class="sidebar" id="sidebar">
                 <div>
-                    <h1>🍔Brasil Burger</h1>
+                    <h1>🍔 Brasil Burger</h1>
                     <h2><p>Tableau de gestion</p></h2>
                     
 
                     <nav class="nav">
-                    <a href="{{ path('dashboard') }}" {% block active_dashboard %}{% endblock %} ><i data-lucide="layout-dashboard"></i> Dashboard</a>
-                    <a href="{{ path('produit') }}" {% block active_produit %}{% endblock %} ><i data-lucide="package"></i> Produits</a>
-                    <a href="{{ path('commande') }}" {% block active_commandes %}{% endblock %} ><i data-lucide="shopping-cart" ></i> Commandes</a>
-                    <a><i data-lucide="map" {% block active_zones %}{% endblock %}></i> Zones</a>
-                    <a><i data-lucide="users" {% block active_clients %}{% endblock %}></i> Clients</a>
-                    <a><i data-lucide="truck" {% block active_livreurs %}{% endblock %}></i> Livreurs</a>
-                    <a><i data-lucide="credit-card" {% block active_paiements %}{% endblock %}></i> Paiements</a>
+                    <a href="{{ path('dashboard') }}" {% block active_dashboard %}{% endblock %} onclick="closeMobileMenu()"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+                    <a href="{{ path('produit') }}" {% block active_produit %}{% endblock %} onclick="closeMobileMenu()"><i data-lucide="package"></i> Produits</a>
+                    <a href="{{ path('commande') }}" {% block active_commandes %}{% endblock %} onclick="closeMobileMenu()"><i data-lucide="shopping-cart" ></i> Commandes</a>
+                    <a onclick="closeMobileMenu()"><i data-lucide="map" {% block active_zones %}{% endblock %}></i> Zones</a>
+                    <a onclick="closeMobileMenu()"><i data-lucide="users" {% block active_clients %}{% endblock %}></i> Clients</a>
+                    <a onclick="closeMobileMenu()"><i data-lucide="truck" {% block active_livreurs %}{% endblock %}></i> Livreurs</a>
+                    <a onclick="closeMobileMenu()"><i data-lucide="credit-card" {% block active_paiements %}{% endblock %}></i> Paiements</a>
                     </nav>
                 </div>
 
                 <!-- Déconnexion -->
-                                                    {% if app.user %}
-                                                    <div class="logout">
-                                                        <a class="dropdown-item" href="{{ path('app_logout') }}"><i data-lucide="log-out"></i> Déconnexion</a>
-                                                    </div>
-                                                    {% endif %}
+                {% if app.user %}
+                <div class="logout">
+                    <a class="dropdown-item" href="{{ path('app_logout') }}"><i data-lucide="log-out"></i> Déconnexion</a>
+                </div>
+                {% endif %}
 
                 </aside>
             
             </div>
         {% endblock %}
+
         <script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  lucide.createIcons();
-</script>
+        <script>
+            lucide.createIcons();
+
+            // Menu mobile
+            function toggleMobileMenu() {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.querySelector('.mobile-menu-overlay');
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+
+            function closeMobileMenu() {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.querySelector('.mobile-menu-overlay');
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        </script>
     </body>
 </html>
