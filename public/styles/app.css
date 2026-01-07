@@ -1,0 +1,195 @@
+
+
+/* ===== RESET & BASE ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(135deg, #f9fafb, #fff7ed);
+  color: #101828;
+  line-height: 1.6;
+}
+
+
+
+/* ===== LAYOUT GESTIONNAIRE ===== */
+.gestionnaire {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, #f54900, #ca3500 50%, #c10007);
+  color: #fff;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+.sidebar h1 {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.sidebar h2 {
+  margin: 0;
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.sidebar p {
+  font-size: 12px;
+  color: #ffd6a7;
+  margin-bottom: 24px;
+}
+
+/* Navigation */
+.nav {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 16px;
+  border-radius: 16px;
+  color: white;
+  text-decoration: none;
+  margin-top: 8px;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.nav a.active,
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.nav a svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Logout */
+.logout {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.logout a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 50px;
+  padding: 0 16px;
+  border-radius: 16px;
+  color: white;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.logout a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: 280px;
+  flex: 1;
+  padding: 32px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ===== MOBILE MENU TOGGLE ===== */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1100;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f54900, #c10007);
+  color: white;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Tablettes (≤ 1024px) */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+
+  .main {
+    margin-left: 240px;
+    padding: 24px;
+  }
+}
+
+/* Mobile (≤ 768px) */
+@media (max-width: 768px) {
+  /* Sidebar en overlay sur mobile */
+  .sidebar {
+    transform: translateX(-100%);
+    width: 280px;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .mobile-menu-overlay.active {
+    display: block;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 72px 16px 16px 16px;
+  }
+}
+
+/* Petits mobiles (≤ 480px) */
+@media (max-width: 480px) {
+  .main {
+    padding: 72px 12px 12px 12px;
+  }
+}
