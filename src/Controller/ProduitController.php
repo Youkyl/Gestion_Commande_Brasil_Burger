@@ -25,36 +25,51 @@ final class ProduitController extends AbstractController
         $criteria = ['isArchive' => false];
 
         // ===== BURGERS =====
-        foreach ($burgerRepo->findBy($criteria) as $b) {
+        try {
+            foreach ($burgerRepo->findBy($criteria) as $b) {
             $produits[] = [
                 'type' => 'Burger',
                 'nom' => $b->getNom(),
                 'description' => $b->getIngredient(),
                 'prix' => $b->getPrix(),
-                'image' => $b->getImageUrl() ?: '/images/placeholder.jpg',
+                'image' => $b->getImageUrl()  ?? 'https://via.placeholder.com/400x200?text=Burger',
             ];
         }
+        } catch (\Exception $e) {
+            error_log('Erreur burgers: ' . $e->getMessage());
+        }
+
 
         // ===== MENUS =====
+        try {
         foreach ($menuRepo->findBy($criteria) as $m) {
             $produits[] = [
                 'type' => 'Menu',
                 'nom' => $m->getNom(),
                 'description' => 'Menu complet',
                 'prix' => $m->getPrix(),
-                'image' => $m->getImageUrl() ?: '/images/placeholder.jpg',
+                'image' => $m->getImageUrl()  ?? 'https://via.placeholder.com/400x200?text=Menu',
             ];
         }
+        } catch (\Exception $e) {
+            error_log('Erreur menus: ' . $e->getMessage());
+        }
+
 
         // ===== COMPLEMENTS =====
+        try {
+                    // ===== COMPLEMENTS =====
         foreach ($complementRepo->findBy($criteria) as $c) {
             $produits[] = [
                 'type' => 'Complément',
                 'nom' => $c->getNom(),
                 'description' => $c->getType(),
                 'prix' => $c->getPrix(),
-                'image' => $c->getImageUrl() ?: '/images/placeholder.jpg',
+                'image' => $c->getImageUrl()  ?? 'https://via.placeholder.com/400x200?text=Complément',
             ];
+        }
+        } catch (\Exception $e) {
+            error_log('Erreur compléments: ' . $e->getMessage());
         }
 
         return $this->render('produit/index.html.twig', [
@@ -75,14 +90,18 @@ final class ProduitController extends AbstractController
         $criteria = ['isArchive' => false];
 
         // ===== BURGERS =====
-        foreach ($burgerRepo->findBy($criteria) as $b) {
-            $burger[] = [
+        try {
+            foreach ($burgerRepo->findBy($criteria) as $b) {
+            $produits[] = [
                 'type' => 'Burger',
                 'nom' => $b->getNom(),
                 'description' => $b->getIngredient(),
                 'prix' => $b->getPrix(),
-                'image' => $b->getImageUrl() ?: '/images/placeholder.jpg',
+                'image' => $b->getImageUrl()  ?? 'https://via.placeholder.com/400x200?text=Burger',
             ];
+        }
+        } catch (\Exception $e) {
+            error_log('Erreur burgers: ' . $e->getMessage());
         }
 
         return $this->render('produit/burger.html.twig', [
@@ -102,14 +121,18 @@ final class ProduitController extends AbstractController
         $criteria = ['isArchive' => false];
 
         // ===== MENUS =====
+        try {
         foreach ($menuRepo->findBy($criteria) as $m) {
-            $menu[] = [
+            $produits[] = [
                 'type' => 'Menu',
                 'nom' => $m->getNom(),
                 'description' => 'Menu complet',
                 'prix' => $m->getPrix(),
-                'image' => $m->getImageUrl() ?: '/images/placeholder.jpg',
+                'image' => $m->getImageUrl()  ?? 'https://via.placeholder.com/400x200?text=Menu',
             ];
+        }
+        } catch (\Exception $e) {
+            error_log('Erreur menus: ' . $e->getMessage());
         }
 
         return $this->render('produit/menu.html.twig', [
@@ -130,14 +153,19 @@ final class ProduitController extends AbstractController
         $criteria = ['isArchive' => false];
 
         // ===== COMPLEMENTS =====
+        try {
+                    // ===== COMPLEMENTS =====
         foreach ($complementRepo->findBy($criteria) as $c) {
-            $complement[] = [
+            $produits[] = [
                 'type' => 'Complément',
                 'nom' => $c->getNom(),
                 'description' => $c->getType(),
                 'prix' => $c->getPrix(),
-                'image' => $c->getImageUrl() ?: '/images/placeholder.jpg',
+                'image' => $c->getImageUrl()  ?? 'https://via.placeholder.com/400x200?text=Complément',
             ];
+        }
+        } catch (\Exception $e) {
+            error_log('Erreur compléments: ' . $e->getMessage());
         }
 
         return $this->render('produit/complement.html.twig', [

@@ -53,6 +53,9 @@ RUN composer install \
 # Copier le reste du projet
 COPY . .
 
+RUN mkdir -p public/styles && \
+    cp -r assets/styles/* public/styles/ 2>/dev/null || true
+
 # Variables d'environnement Symfony
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
