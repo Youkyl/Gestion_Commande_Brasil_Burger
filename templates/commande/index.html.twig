@@ -3,7 +3,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="/assets/styles/pages/commande.css">
+    <link rel="stylesheet" href="{{ asset('styles/commande.css') }}">
 {% endblock %}
 
 {% block active_commandes %}class="active"{% endblock %}
@@ -107,7 +107,7 @@
               </span>
             </td>
             <td>
-              <span class="link" onclick="openModal({{ c.id }})">Détails</span>
+              <a href="{{ path('commande_show', {'id': c.id}) }}"><span class="link" onclick="openModal({{ c.id }})">Détails</span></a>
             </td>
           </tr>
         {% endfor %}

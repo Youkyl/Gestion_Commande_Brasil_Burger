@@ -1,5 +1,12 @@
 /* Styles pour la page détail commande */
-.main { max-width: 1200px; margin: 0 auto; padding: 32px; }
+.main { 
+  margin-left: 300px;
+  flex: 1;
+  padding: 32px; }
+
+a{
+  text-decoration: none;
+}
 
 h1 { font-size: 32px; margin-bottom: 24px; color: #101828; }
 

@@ -1,10 +1,10 @@
-/* =============================================
-   LOGIN PAGE - STYLES SPÉCIFIQUES
-   ============================================= */
-
-/* ========== RESET LOCAL ========== */
-.page * {
+/* ========== RESET ========== */
+* {
   box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
 /* ========== BACKGROUND ========== */
@@ -17,6 +17,7 @@
 
 /* grid pattern */
 .page::after {
+  /*content: "";*/
   position: absolute;
   inset: 0;
   background-image:
@@ -33,30 +34,9 @@
   filter: blur(80px);
   opacity: .25;
 }
-
-.blob.orange {
-  background: #fff;
-  width: 280px;
-  height: 280px;
-  top: 80px;
-  left: 40px;
-}
-
-.blob.yellow {
-  background: #fde047;
-  width: 380px;
-  height: 380px;
-  bottom: 60px;
-  right: 60px;
-}
-
-.blob.pink {
-  background: #f9a8d4;
-  width: 260px;
-  height: 260px;
-  top: 50%;
-  left: 30%;
-}
+.blob.orange { background:#fff; width:280px;height:280px;top:80px;left:40px;}
+.blob.yellow { background:#fde047;width:380px;height:380px;bottom:60px;right:60px;}
+.blob.pink { background:#f9a8d4;width:260px;height:260px;top:50%;left:30%;}
 
 /* ========== CONTENT ========== */
 .content {
@@ -66,6 +46,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* back button */
+.back {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.12);
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 
 /* layout */
@@ -132,17 +128,9 @@
   color: white;
 }
 
-.orange {
-  background: #f97316;
-}
-
-.pink {
-  background: #ec4899;
-}
-
-.yellow {
-  background: #eab308;
-}
+.orange {background:#f97316;}
+.pink {background:#ec4899;}
+.yellow {background:#eab308;}
 
 /* ========== CARD ========== */
 .card {
@@ -225,26 +213,11 @@ label {
 }
 
 /* ========== RESPONSIVE ========== */
-@media(max-width: 992px) {
+@media(max-width: 992px){
   .layout {
     grid-template-columns: 1fr;
   }
-  
   .left {
     display: none;
-  }
-}
-
-@media(max-width: 768px) {
-  .content {
-    padding: 20px;
-  }
-
-  .card-header h2 {
-    font-size: 24px;
-  }
-
-  .card-body {
-    padding: 24px;
   }
 }

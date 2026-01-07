@@ -41,6 +41,9 @@ WORKDIR /app
 # Copier les fichiers Composer
 COPY composer.json composer.lock symfony.lock ./
 
+RUN mkdir -p public/styles/pages && \
+    cp -r assets/styles/* public/styles/ 2>/dev/null || true
+
 # Installer dépendances
 RUN composer install \
     --no-dev \
