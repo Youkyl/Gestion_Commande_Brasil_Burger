@@ -8,46 +8,118 @@
 
 <style>
 
-/* Styles pour la page détail commande */
+/* ===== GLOBAL ===== */
+body {
+  margin: 0;
+  font-family: Inter, Segoe UI, sans-serif;
+  background: #fafafa;
+}
+
+.gestionnaire {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== MAIN ===== */
 .main { 
   margin-left: 300px;
   flex: 1;
-  padding: 32px; }
-
-a{
-  text-decoration: none;
+  padding: 32px;
 }
 
-h1 { font-size: 32px; margin-bottom: 24px; color: #101828; }
+a {
+  text-decoration: none;
+  color: #ff6900;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #e7000b;
+}
+
+/* ===== HEADINGS ===== */
+h1 { 
+  font-size: 32px; 
+  margin: 16px 0 24px 0; 
+  color: #101828;
+}
 
 h3 {
   font-size: 20px;
-  margin: 24px 0 12px 0;
+  margin: 32px 0 16px 0;
   color: #374151;
   border-bottom: 2px solid #f3f4f6;
   padding-bottom: 8px;
+  font-weight: 700;
 }
 
+h3:first-of-type {
+  margin-top: 24px;
+}
+
+/* ===== LISTS ===== */
 ul {
   list-style: none;
   padding: 0;
   background: white;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
+}
+
+ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+ul li:last-child {
+  border-bottom: none;
+}
+
+ul li strong {
+  color: #111827;
+  min-width: 140px;
+}
+
+ul ul {
+  margin-top: 8px;
+  padding: 12px 16px;
+  background: #f9fafb;
+  box-shadow: none;
+}
+
+ul ul li {
+  padding: 6px 0;
+  font-size: 14px;
+}
+
+/* ===== TABLE ===== */
+.table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
 }
 
 table {
   width: 100%;
   background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border-collapse: collapse;
 }
 
 th, td {
-  padding: 12px;
+  padding: 14px 16px;
   text-align: left;
   border-bottom: 1px solid #f3f4f6;
 }
@@ -56,78 +128,355 @@ th {
   background: #f9fafb;
   font-weight: 600;
   color: #374151;
+  white-space: nowrap;
+  font-size: 14px;
 }
 
+td {
+  color: #374151;
+  font-size: 14px;
+}
+
+td strong {
+  color: #111827;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== FORM ===== */
 form {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   gap: 12px;
   align-items: center;
+  margin-bottom: 24px;
 }
 
 select {
   flex: 1;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   font-size: 14px;
+  background: white;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+select:focus {
+  border-color: #ff6900;
 }
 
 button[type="submit"] {
-  padding: 10px 24px;
+  padding: 12px 28px;
   background: linear-gradient(90deg, #ff6900, #e7000b);
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform 0.2s ease;
+  white-space: nowrap;
 }
 
-/* Responsive */
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 105, 0, 0.3);
+}
+
+/* ===== MESSAGES ===== */
+p {
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+em {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* ===== BOUTON MENU MOBILE ===== */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: linear-gradient(135deg,#f54900,#c10007);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+  font-size: 24px;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.menu-toggle.active {
+  background: linear-gradient(135deg,#c10007,#8b0000);
+}
+
+.menu-icon,
+.close-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.close-icon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.menu-toggle.active .menu-icon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.menu-toggle.active .close-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Tablettes (≤1200px) */
+@media (max-width: 1200px) {
+  .main {
+    padding: 24px;
+  }
+}
+
+/* Tablettes petites (≤992px) */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 250px;
+  }
+
+  .main {
+    margin-left: 270px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+}
+
+/* Mobile (≤768px) */
 @media (max-width: 768px) {
-  .main { padding: 16px; }
-  h1 { font-size: 24px; }
-  table { font-size: 14px; }
-  form { flex-direction: column; }
-  select, button { width: 100%; }
+  body {
+    overflow-x: hidden;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 280px;
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 80px 16px 20px 16px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 18px;
+    margin: 24px 0 12px 0;
+  }
+
+  ul {
+    padding: 16px 20px;
+  }
+
+  ul li {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+  }
+
+  ul li strong {
+    min-width: auto;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  th, td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  form {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  select, button[type="submit"] {
+    width: 100%;
+  }
 }
 
+/* Petit Mobile (≤480px) */
+@media (max-width: 480px) {
+  .main {
+    padding: 70px 12px 16px 12px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  ul {
+    padding: 12px 16px;
+  }
+
+  ul li {
+    padding: 6px 0;
+    font-size: 14px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  form {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  select {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
+
+/* Scroll horizontal stylisé */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #ff6900;
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #e7000b;
+}
 
 </style>
 
-
-
 {% endblock %}
+
+{% block active_commandes %}class="active"{% endblock %}
 
 {% block body %}
 <div class="gestionnaire">
+
+  <!-- BOUTON MENU MOBILE -->
+  <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+    <span class="menu-icon">☰</span>
+    <span class="close-icon">✕</span>
+  </button>
+
+  <!-- OVERLAY POUR FERMER LA SIDEBAR -->
+  <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
   <main class="main">
   
-
-<a href="{{ path('commande') }}">← Retour à la liste</a>
+    <a href="{{ path('commande') }}">← Retour à la liste</a>
     <h1>Détail de la commande</h1>
 
-<h3>Informations générales</h3>
-<ul>
-    <li><strong>Référence :</strong> {{ commande.reference }}</li>
-    <li><strong>Date :</strong> {{ commande.dateCommande|date('d/m/Y H:i') }}</li>
-    <li><strong>Type :</strong> {{ commande.typeCommande }}</li>
-    <li><strong>État :</strong> {{ commande.etat }}</li>
-    <li><strong>Montant total :</strong> {{ commande.montantTotal }} FCFA</li>
-</ul>
+    <h3>Informations générales</h3>
+    <ul>
+        <li><strong>Référence :</strong> {{ commande.reference }}</li>
+        <li><strong>Date :</strong> {{ commande.dateCommande|date('d/m/Y H:i') }}</li>
+        <li><strong>Type :</strong> {{ commande.typeCommande }}</li>
+        <li><strong>État :</strong> {{ commande.etat }}</li>
+        <li><strong>Montant total :</strong> {{ commande.montantTotal }} FCFA</li>
+    </ul>
 
-<h3>Client</h3>
-<ul>
-    <li><strong>Nom :</strong> {{ commande.client.nom }}</li>
-    <li><strong>Prénom :</strong> {{ commande.client.prenom }}</li>
-    <li><strong>Téléphone :</strong> {{ commande.client.telephone }}</li>
-    <li><strong>Email :</strong> {{ commande.client.email }}</li>
-</ul>
+    <h3>Client</h3>
+    <ul>
+        <li><strong>Nom :</strong> {{ commande.client.nom }}</li>
+        <li><strong>Prénom :</strong> {{ commande.client.prenom }}</li>
+        <li><strong>Téléphone :</strong> {{ commande.client.telephone }}</li>
+        <li><strong>Email :</strong> {{ commande.client.email }}</li>
+    </ul>
 
- <h3>Paiement</h3>
+    <h3>Paiement</h3>
     {% if commande.paiement %}
         <ul>
             <li><strong>Mode :</strong> {{ commande.paiement.mode }}</li>
@@ -139,75 +488,94 @@ button[type="submit"] {
         <p><em>Aucun paiement enregistré pour cette commande.</em></p>
     {% endif %}
 
+    <h3>Produits commandés</h3>
 
+    <div class="table-container">
+      <table>
+          <thead>
+              <tr>
+                  <th>Produit</th>
+                  <th>Type</th>
+                  <th>Quantité</th>
+                  <th>Prix unitaire</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for detail in commande.commandeDetails %}
+              <tr>
+                  <td>
+                      {% if detail.burger %}
+                          {{ detail.burger.nom }}
+                      {% elseif detail.menu %}
+                          {{ detail.menu.nom }}
+                      {% endif %}
+                  </td>
+                  <td>
+                      {% if detail.burger %}Burger{% else %}Menu{% endif %}
+                  </td>
+                  <td>{{ detail.quantite }}</td>
+                  <td>{{ detail.prixUnitaire }} FCFA</td>
+              </tr>
 
-<h3>Produits commandés</h3>
+              {% if detail.commandeComplements|length > 0 %}
+                  <tr>
+                      <td colspan="4">
+                          <strong>Compléments :</strong>
+                          <ul>
+                              {% for cc in detail.commandeComplements %}
+                                  <li>
+                                      {{ cc.complement.nom }}
+                                      ({{ cc.complement.type }}) —
+                                      {{ cc.quantite }} × {{ cc.prixUnitaire }} FCFA
+                                  </li>
+                              {% endfor %}
+                          </ul>
+                      </td>
+                  </tr>
+              {% endif %}
+              
+          {% else %}
+              <tr>
+                  <td colspan="4">Aucun produit</td>
+              </tr>
+          {% endfor %}
+          
+          </tbody>
+      </table>
+    </div>
 
-<table border="1" cellpadding="6">
-    <thead>
-        <tr>
-            <th>Produit</th>
-            <th>Type</th>
-            <th>Quantité</th>
-            <th>Prix unitaire</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for detail in commande.commandeDetails %}
-        <tr>
-            <td>
-                {% if detail.burger %}
-                    {{ detail.burger.nom }}
-                {% elseif detail.menu %}
-                    {{ detail.menu.nom }}
-                {% endif %}
-            </td>
-            <td>
-                {% if detail.burger %}Burger{% else %}Menu{% endif %}
-            </td>
-            <td>{{ detail.quantite }}</td>
-            <td>{{ detail.prixUnitaire }} FCFA</td>
-        </tr>
+    <h3>Actions gestionnaire</h3>
 
-        {% if detail.commandeComplements|length > 0 %}
-            <tr>
-                <td colspan="4">
-                    <strong>Compléments :</strong>
-                    <ul>
-                        {% for cc in detail.commandeComplements %}
-                            <li>
-                                {{ cc.complement.nom }}
-                                ({{ cc.complement.type }}) —
-                                {{ cc.quantite }} × {{ cc.prixUnitaire }} FCFA
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
-        {% endif %}
-        
-    {% else %}
-        <tr>
-            <td colspan="4">Aucun produit</td>
-        </tr>
-    {% endfor %}
-    
-    </tbody>
-</table>
-<br>
-
-<h3>Actions gestionnaire</h3>
-
-<form method="post" action="{{ path('commande_change_etat', {id: commande.id}) }}">
-    <select name="etat">
-        <option value="PAYEE">Marquer comme PAYÉE</option>
-        <option value="TERMINEE">Marquer comme TERMINÉE</option>
-        <option value="ANNULEE">ANNULER la commande</option>
-    </select>
-    <button type="submit">Valider</button>
-</form>
-
+    <form method="post" action="{{ path('commande_change_etat', {id: commande.id}) }}">
+        <select name="etat">
+            <option value="">---Changer l'état de la commande---</option> 
+            <option value="EN_COURS">Marquer comme EN COURS</option> 
+            <option value="PAYEE">Marquer comme PAYÉE</option>
+            <option value="TERMINEE">Marquer comme TERMINÉE</option>
+            <option value="ANNULEE">ANNULER la commande</option>
+        </select>
+        <button type="submit">Valider</button>
+    </form>
 
   </main>
 </div>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  const menuToggle = document.getElementById('menuToggle');
+  
+  if (sidebar) {
+    sidebar.classList.toggle('active');
+  }
+  if (overlay) {
+    overlay.classList.toggle('active');
+  }
+  if (menuToggle) {
+    menuToggle.classList.toggle('active');
+  }
+}
+</script>
+
 {% endblock %}

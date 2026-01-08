@@ -10,81 +10,395 @@
 
 
 /* ===== LAYOUT ===== */
-.page { display:flex; background:#fafafa; min-height:100vh; }
-.main { margin-left:288px; padding:32px; width:100%; }
+.page { 
+  display:flex; 
+  background:#fafafa; 
+  min-height:100vh; 
+}
+
+.main { 
+  margin-left:288px; 
+  padding:32px; 
+  flex: 1;
+}
 
 a{
   text-decoration: none;
 }
 
 /* ===== HEADER ===== */
-h1 { margin:0; font-size:32px; }
-.subtitle { color:#6b7280; margin-bottom:24px; }
+h1 { 
+  margin:0; 
+  font-size:32px; 
+}
+
+.subtitle { 
+  color:#6b7280; 
+  margin-bottom:24px; 
+  font-size: 15px;
+}
 
 /* ===== SEARCH ===== */
 .search {
-  width:100%; padding:14px 18px; border-radius:16px;
-  border:1px solid #e5e7eb; margin-bottom:16px;
+  width:100%; 
+  padding:14px 18px; 
+  border-radius:16px;
+  border:1px solid #e5e7eb; 
+  margin-bottom:16px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.search:focus {
+  border-color: #ff6900;
 }
 
 /* ===== FILTERS ===== */
-.filters { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
-.chip {
-  padding:6px 14px; border-radius:999px;
-  font-size:13px; cursor:pointer;
-  background:#f3f4f6;
+.filters { 
+  display:flex; 
+  gap:12px; 
+  flex-wrap:wrap; 
+  margin-bottom:20px; 
 }
-.chip.active { background:#ff6900; color:white; }
+
+.chip {
+  padding:8px 16px; 
+  border-radius:999px;
+  font-size:13px; 
+  cursor:pointer;
+  background:#f3f4f6;
+  transition: all 0.2s ease;
+  border: none;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  background:#e5e7eb;
+}
+
+.chip.active { 
+  background:#ff6900; 
+  color:white; 
+}
 
 /* ===== TABLE ===== */
 .table {
-  background:white; border-radius:16px;
+  background:white; 
+  border-radius:16px;
   box-shadow:0 10px 25px rgba(0,0,0,.08);
-  overflow:hidden;
+  overflow-x: auto;
+  overflow-y: visible;
 }
-table { width:100%; border-collapse:collapse; }
+
+table { 
+  width:100%; 
+  border-collapse:collapse;
+}
+
 th, td {
-  padding:14px; font-size:14px;
+  padding:14px; 
+  font-size:14px;
   border-bottom:1px solid #f3f4f6;
   text-align:left;
+  vertical-align: middle;
 }
-th { color:#6b7280; font-weight:600; }
+
+th { 
+  color:#6b7280; 
+  font-weight:600;
+  background: #f9fafb;
+  white-space: nowrap;
+}
+
+td {
+  color: #374151;
+}
+
+td strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+td small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+tbody tr {
+  transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
 
 /* ===== BADGES ===== */
 .badge {
-  padding:4px 10px; border-radius:999px; font-size:12px;
+  padding:4px 10px; 
+  border-radius:999px; 
+  font-size:12px;
+  white-space: nowrap;
+  display: inline-block;
 }
+
 .prep { background:#dbeafe; color:#1d4ed8; }
 .ready { background:#ede9fe; color:#7c3aed; }
 .done { background:#dcfce7; color:#15803d; }
 .wait { background:#fef3c7; color:#92400e; }
 .cancel { background:#fee2e2; color:#b91c1c; }
 
-.link { color:#ff6900; cursor:pointer; }
+.link { 
+  color:#ff6900; 
+  cursor:pointer;
+  text-decoration: underline;
+}
+
+.link:hover {
+  color:#e7000b;
+}
+
+/* ===== BOUTON MENU MOBILE ===== */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: linear-gradient(135deg,#f54900,#c10007);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+  font-size: 24px;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.menu-toggle.active {
+  background: linear-gradient(135deg,#c10007,#8b0000);
+}
+
+.menu-icon,
+.close-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.close-icon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.menu-toggle.active .menu-icon {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.menu-toggle.active .close-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
 
 /* ===== RESPONSIVE ===== */
+
+/* Tablettes (≤1200px) */
+@media (max-width: 1200px) {
+  .main {
+    padding: 24px;
+  }
+}
+
+/* Tablettes petites (≤992px) */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 250px;
+  }
+
+  .main {
+    margin-left: 270px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+}
+
+/* Mobile (≤768px) */
 @media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 280px;
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 80px 16px 20px 16px;
+  }
+
   h1 {
     font-size: 24px;
   }
 
-  .table {
-    border-radius: 12px;
+  .subtitle {
+    font-size: 14px;
+    margin-bottom: 16px;
   }
 
-  table {
-    min-width: 900px;
-    font-size: 13px;
+  .search {
+    padding: 12px 16px;
+    font-size: 14px;
   }
 
-  th, td {
-    padding: 10px 12px;
+  .filters {
+    gap: 8px;
+    margin-bottom: 16px;
   }
 
   .chip {
     padding: 6px 12px;
     font-size: 12px;
   }
+
+  .table {
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  th, td {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  th {
+    font-size: 12px;
+  }
+
+  .badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+}
+
+/* Petit Mobile (≤480px) */
+@media (max-width: 480px) {
+  .main {
+    padding: 70px 12px 16px 12px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .search {
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .filters {
+    gap: 6px;
+  }
+
+  .chip {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .table {
+    border-radius: 10px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  th {
+    font-size: 11px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .link {
+    font-size: 12px;
+  }
+}
+
+/* Scroll horizontal stylisé */
+.table::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.table::-webkit-scrollbar-thumb {
+  background: #ff6900;
+  border-radius: 10px;
+}
+
+.table::-webkit-scrollbar-thumb:hover {
+  background: #e7000b;
 }
 
 </style>
@@ -100,6 +414,14 @@ th { color:#6b7280; font-weight:600; }
 
 <div class="page">
 
+  <!-- BOUTON MENU MOBILE -->
+  <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+    <span class="menu-icon">☰</span>
+    <span class="close-icon">✕</span>
+  </button>
+
+  <!-- OVERLAY POUR FERMER LA SIDEBAR -->
+  <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
   <main class="main">
     <h1>Gestion des commandes</h1>
@@ -176,15 +498,15 @@ th { color:#6b7280; font-weight:600; }
                 </td>
             <td><span class="badge wait">{{ c.typeCommande }}</span></td>
             <td>{{ c.montantTotal }} FCFA</td>
-<td>
-  {% if c.paiement %}
-    {{ c.paiement.mode|replace({'_':' '}) }}<br>
-    <span class="badge done">Payé</span>
-  {% else %}
-    <em>Non payé</em><br>
-    <span class="badge wait">En attente</span>
-  {% endif %}
-</td>
+            <td>
+              {% if c.paiement %}
+                {{ c.paiement.mode|replace({'_':' '}) }}<br>
+                <span class="badge done">Payé</span>
+              {% else %}
+                <em>Non payé</em><br>
+                <span class="badge wait">En attente</span>
+              {% endif %}
+            </td>
             <td>
               <span class="badge
                 {{ c.etat == 'EN_COURS' ? 'prep' :
@@ -195,7 +517,9 @@ th { color:#6b7280; font-weight:600; }
               </span>
             </td>
             <td>
-              <a href="{{ path('commande_show', {'id': c.id}) }}"><span class="link" onclick="openModal({{ c.id }})">Détails</span></a>
+              <a href="{{ path('commande_show', {'id': c.id}) }}">
+                <span class="link">Détails</span>
+              </a>
             </td>
           </tr>
         {% endfor %}
@@ -206,6 +530,22 @@ th { color:#6b7280; font-weight:600; }
 </div>
 
 <script>
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  const menuToggle = document.getElementById('menuToggle');
+  
+  if (sidebar) {
+    sidebar.classList.toggle('active');
+  }
+  if (overlay) {
+    overlay.classList.toggle('active');
+  }
+  if (menuToggle) {
+    menuToggle.classList.toggle('active');
+  }
+}
+
 function openModal(id) {
   fetch('/commande/' + id)
     .then(r => r.text())

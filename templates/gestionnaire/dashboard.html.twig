@@ -36,6 +36,7 @@ body {
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
+  z-index: 1000;
 }
 
 .sidebar h2 {
@@ -50,7 +51,6 @@ body {
 
 .logout {
   margin-top: 380px;
-  
 }
 
 .logout a {
@@ -269,52 +269,212 @@ body {
 .badge.green { background:#dcfce7;color:#008236; }
 .badge.orange { background:#ffedd4;color:#ca3500; }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1024px) {
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .header h1 {
-    font-size: 28px;
-  }
+/* ===== BOUTON MENU MOBILE ===== */
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: linear-gradient(135deg,#f54900,#c10007);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+  font-size: 24px;
+  align-items: center;
+  justify-content: center;
 }
 
-@media (max-width: 768px) {
-  .stats {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
 
-  .stat {
+/* ===== RESPONSIVE ===== */
+
+/* Tablettes (≤1200px) */
+@media (max-width: 1200px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
     height: auto;
   }
 
   .grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Tablettes petites (≤992px) */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 250px;
+  }
+
+  .main {
+    margin-left: 270px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+  }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    width: 280px;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 80px 20px 20px 20px;
+    width: 100%;
+  }
 
   .header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: 28px;
   }
 
   .actions {
+    display: flex;
     width: 100%;
+    gap: 8px;
   }
 
   .actions button {
     flex: 1;
+    margin-left: 0;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+    margin: 24px 0;
+  }
+
+  .stat {
+    height: auto;
+  }
+
+  .stat b {
+    font-size: 28px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .logout {
+    margin-top: 120px;
+  }
+}
+
+/* Petit Mobile (≤480px) */
+@media (max-width: 480px) {
+  .main {
+    padding: 70px 16px 16px 16px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .actions button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .stat-normal {
+    padding: 16px;
+  }
+
+  .stat b {
+    font-size: 24px;
+  }
+
+  .stat h3 {
+    font-size: 13px;
+  }
+
+  .card-header,
+  .card-body {
+    padding: 16px;
+  }
+
+  .top-item {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .rank {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .order {
+    padding: 12px;
+  }
+
+  .sidebar {
+    width: 260px;
+  }
+
+  .sidebar h2 {
+    font-size: 20px;
+  }
+
+  .nav a {
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .logout {
+    margin-top: 80px;
   }
 }
 
 
 </style>
-
-
-
-
-
 
 {% endblock %}
 
@@ -323,7 +483,6 @@ body {
 {% block body %}
 
 <div class="gestionnaire">
-
 
   <!-- MAIN -->
   <main class="main">
@@ -335,7 +494,7 @@ body {
         <span>Statistiques du {{ "now"|date("d/m/Y") }}</span>
       </div>
       <div class="actions">
-        <button>Aujourd’hui</button>
+        <button>Aujourd'hui</button>
         <button>Cette semaine</button>
         <button class="export">Exporter</button>
       </div>
@@ -449,5 +608,14 @@ body {
   </main>
 </div>
 
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+</script>
 
 {% endblock %}
