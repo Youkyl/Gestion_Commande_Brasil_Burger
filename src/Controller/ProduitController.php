@@ -16,7 +16,7 @@ final class ProduitController extends AbstractController
         BurgerRepository $burgerRepo,
         MenuRepository $menuRepo,
         ComplementRepository $complementRepo
-    ): Response {
+        ): Response {
 
         // ⚠️ On ne modifie PAS la base, on adapte Symfony
         $produits = [];
@@ -81,7 +81,7 @@ final class ProduitController extends AbstractController
     #[Route('/produit/burger', name: 'burger')]
     public function burger(
         BurgerRepository $burgerRepo,
-    ): Response {
+        ): Response {
 
         // ⚠️ On ne modifie PAS la base, on adapte Symfony
         $burger = [];
@@ -92,7 +92,7 @@ final class ProduitController extends AbstractController
         // ===== BURGERS =====
         try {
             foreach ($burgerRepo->findBy($criteria) as $b) {
-            $produits[] = [
+            $burger[] = [
                 'type' => 'Burger',
                 'nom' => $b->getNom(),
                 'description' => $b->getIngredient(),
@@ -103,7 +103,7 @@ final class ProduitController extends AbstractController
         } catch (\Exception $e) {
             error_log('Erreur burgers: ' . $e->getMessage());
         }
-
+        
         return $this->render('produit/burger.html.twig', [
             'burger' => $burger
         ]);
@@ -112,7 +112,7 @@ final class ProduitController extends AbstractController
     #[Route('/produit/menu', name: 'menu')]
     public function menu(
         MenuRepository $menuRepo,
-    ): Response {
+        ): Response {
 
         // ⚠️ On ne modifie PAS la base, on adapte Symfony
         $menu = [];
@@ -123,7 +123,7 @@ final class ProduitController extends AbstractController
         // ===== MENUS =====
         try {
         foreach ($menuRepo->findBy($criteria) as $m) {
-            $produits[] = [
+            $menu[] = [
                 'type' => 'Menu',
                 'nom' => $m->getNom(),
                 'description' => 'Menu complet',
@@ -144,7 +144,7 @@ final class ProduitController extends AbstractController
     #[Route('/produit/complement', name: 'complement')]
     public function complement(
         ComplementRepository $complementRepo,
-    ): Response {
+        ): Response {
 
         // ⚠️ On ne modifie PAS la base, on adapte Symfony
         $complement = [];
@@ -156,7 +156,7 @@ final class ProduitController extends AbstractController
         try {
                     // ===== COMPLEMENTS =====
         foreach ($complementRepo->findBy($criteria) as $c) {
-            $produits[] = [
+            $complement[] = [
                 'type' => 'Complément',
                 'nom' => $c->getNom(),
                 'description' => $c->getType(),
